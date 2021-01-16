@@ -11,18 +11,24 @@
     # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
+    autocomplete_method = "coc"
+    snippet_engine = "ultisnips"
+
     enable_neomake = false
     enable_ale     = true
 
+    colorscheme = "oceanic_material"
     # colorscheme = "gruvbox"
     # colorscheme = "one"
-    colorscheme = "oceanic_material"
     # colorscheme = "kolor"
     # colorscheme = "darcula"
     # colorscheme = "srcery"
-    # colorscheme = "srcery"
+    # colorscheme = "space-vim-dark"
+    # colorscheme = "space_vim_theme"
 
-    # colorscheme_bg = "dark"
+
+
+    colorscheme_bg = "white"
     # enable_cursorcolumn = true
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
@@ -101,10 +107,18 @@
     bootstrap_after = "myspacevim#after"
 
 # Enable autocomplete layer
+# [[layers]]
+  # name = 'coc'
+  # auto-completion-return-key-behavior = "complete"
+  # auto-completion-tab-key-behavior = "smart"
+
 [[layers]]
-  name = 'coc'
-  auto-completion-return-key-behavior = "complete"
-  auto-completion-tab-key-behavior = "smart"
+  name = "lsp"
+  # filetypes = [
+    # "ruby",
+    # "javascript"
+  # ]
+
 
 [[layers]]
   name = "test"
@@ -113,7 +127,10 @@
   # name = "lang#html"
 [[layers]]
   name = "core#statusline"
-#
+
+[[layers]]
+  name = "autocomplete"
+
 [[layers]]
   name = 'shell'
   default_position = 'top'
@@ -123,10 +140,17 @@
   name = "lang#ruby"
 
 # [[layers]]
-# name = "lang#javascript"
+  # name = "lang#javascript"
+  # enable_flow_syntax = true
 
 [[custom_plugins]]
   name= "ryanoasis/vim-devicons"
+  merged = 0
+[[custom_plugins]]
+  name= "tpope/vim-fugitive"
+  merged = 0
+[[custom_plugins]]
+  name= "lambdalisue/glyph-palette.vim"
   merged = 0
 [[custom_plugins]]
   name = "ctrlpvim/ctrlp.vim"
@@ -144,24 +168,27 @@
   name = "sunaku/vim-ruby-minitest"
   merged = 0
 [[custom_plugins]]
-  name = 'sheerun/vim-json'
-  merged = 0
-[[custom_plugins]]
   name = "lilydjwg/colorizer"
   merged = 0
 [[custom_plugins]]
   name = "tpope/vim-endwise"
   merged = 0
+
+# React and TypeScript Plugins
 [[custom_plugins]]
   name = "mattn/emmet-vim"
   merged = 0
-
-# React and TypeScript Plugins
+[[custom_plugins]]
+  name = 'sheerun/vim-json'
+  merged = 0
 [[custom_plugins]]
   name = 'MaxMEllon/vim-jsx-pretty'
   merged = 0
 [[custom_plugins]]
   name = 'peitalin/vim-jsx-typescript'
+  merged = 0
+[[custom_plugins]]
+  name = 'HerringtonDarkholme/yats.vim'
   merged = 0
 [[custom_plugins]]
   name = 'leafgarland/typescript-vim'
@@ -175,29 +202,41 @@
 [[custom_plugins]]
   name = 'prettier/vim-prettier'
   merged = 0
+#disable for vim-jsx-improved
+# [[custom_plugins]]
+  # name = 'pangloss/vim-javascript'
+  # merged = 0
 [[custom_plugins]]
-  name = 'pangloss/vim-javascript'
+  name = 'chemzqm/vim-jsx-improve'
   merged = 0
 [[custom_plugins]]
-  name = 'neoclide/vim-jsx-improve'
+  name = 'mlaursen/vim-react-snippets'
   merged = 0
-[[custom_plugins]]
-  name = 'adelarsq/vim-emoji-icon-theme'
-  merged = 0
+
+# Vue
+# [[custom_plugins]]
+  # name = 'leafOfTree/vim-vue-plugin'
+  # merged = 0
 
 # themes
 [[custom_plugins]]
   name = 'rakr/vim-one'
   merged = 0
-[[custom_plugins]]
-  name = 'zeis/vim-kolor'
-  merged = 0
+# [[custom_plugins]]
+  # name = 'zeis/vim-kolor'
+  # merged = 0
 [[custom_plugins]]
   name = 'doums/darcula'
   merged = 0
 [[custom_plugins]]
   name = 'glepnir/oceanic-material'
   merged = 0
+# [[custom_plugins]]
+  # name = 'srcery-colors/srcery-vim'
+  # merged = 0
 [[custom_plugins]]
-  name = 'srcery-colors/srcery-vim'
+  name = 'liuchengxu/space-vim-dark'
+  merged = 0
+[[custom_plugins]]
+  name = 'liuchengxu/space-vim-theme'
   merged = 0
