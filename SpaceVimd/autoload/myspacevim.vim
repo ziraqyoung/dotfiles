@@ -4,14 +4,6 @@ function! myspacevim#before() abort
   set list
   set showbreak=↪
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
-  let g:oceanic_next_terminal_italic = 1
-
-  augroup my-glyph-palette
-    autocmd! *
-    autocmd FileType fern call glyph_palette#apply()
-    autocmd FileType nerdtree,startify call glyph_palette#apply()
-  augroup END
-
 
   imap ,, <C-y>,
   " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
@@ -36,6 +28,10 @@ function! myspacevim#before() abort
   " let g:user_emmet_install_global = 0 
 
   imap jj <Esc>
+  set clipboard=unnamedplus
+
+  let g:defx_icons_enable_syntax_highlight = 0
+ 
 
   nmap <silent> gi <Plug>(coc-implementation)
 
@@ -63,12 +59,6 @@ function! myspacevim#after() abort
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
   hi Comment guifg=#5C6370 ctermfg=59
 
-  augroup my-glyph-palette
-    autocmd! *
-    autocmd FileType fern call glyph_palette#apply()
-    autocmd FileType nerdtree,startify call glyph_palette#apply()
-  augroup END
-
   imap ,, <C-y>,
   " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
@@ -89,9 +79,13 @@ function! myspacevim#after() abort
 
   autocmd FileType html,css,javascriptreact,javascript.jsx,javascript EmmetInstall
   let g:user_emmet_mode='a'
-  " let g:user_emmet_install_global = 0 
+  " let g:user_emmet_install_global = 0
+
 
   imap jj <Esc>
+  set clipboard=unnamedplus
+
+  let g:defx_icons_enable_syntax_highlight = 0
 
   nmap <silent> gi <Plug>(coc-implementation)
 

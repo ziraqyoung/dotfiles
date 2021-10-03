@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/home/ziraqyoung/Public/Ruby/rails/6/magz/app/views/layouts'
+let g:netrw_dirhist_8='/home/ziraqyoung/Public/Ruby/rails/6/magz/app/models'
+let g:netrw_dirhist_7='/home/ziraqyoung/Public/Ruby/rails/6/magz/app/models/concerns'
+let g:netrw_dirhist_6='/home/ziraqyoung/Public/Ruby/rails/6/magz/app/models'
+let g:netrw_dirhist_5='/home/ziraqyoung/Public/Ruby/rails/6/magz/app/models/concerns'
+let g:netrw_dirhist_4='/home/ziraqyoung/Public/Ruby/basics/networking'
+let g:netrw_dirhist_3='/home/ziraqyoung/Public/Ruby/rails/6/tutorio'
+let g:netrw_dirhist_2='/home/ziraqyoung/Public/Ruby/rails/6/tutorio/.git'
+let g:netrw_dirhist_1='/home/ziraqyoung/Public/Ruby/rails/6/tutorio'
+let g:netrw_dirhist_0='/home/ziraqyoung/Public/Ruby/rails/6/tutorio/log'
