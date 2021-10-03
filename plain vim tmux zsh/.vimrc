@@ -577,6 +577,7 @@ let g:snipMate = { 'snippet_version' : 1 }
 set termguicolors
 let g:user_emmet_expandabbr_key='<Tab>'
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
   au InsertEnter,InsertChange *
@@ -587,4 +588,3 @@ if has("autocmd")
     \ endif
   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
-
