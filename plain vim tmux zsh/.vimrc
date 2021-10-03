@@ -145,6 +145,8 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-ragtag'
 Plugin 'vim-ruby/vim-ruby'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
 
 " ============================================================================
 " Install plugins the first time vim runs
@@ -263,7 +265,11 @@ nmap ,wr :RecurGrepFast <cword><CR>
 " use 256 colors when possible
 if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
 	let &t_Co = 256
-    colorscheme darcula
+    " colorscheme darcula
+    let g:material_terminal_italics = 1
+    let g:material_theme_style = 'palenight'
+    colorscheme material
+
     " colorscheme OceanicNext
 else
     colorscheme delek
@@ -500,7 +506,7 @@ let g:choosewin_overlay_enable = 1
 " Airline ------------------------------
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'bubblegum'
+let g:airline_theme = 'material'
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#left_sep = ' '
 "let g:airline#extensions#tabline#left_alt_sep = '|'
