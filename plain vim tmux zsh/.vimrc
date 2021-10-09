@@ -12,27 +12,16 @@ scriptencoding utf-8
 " no vi-compatible
 set nocompatible
 
-" Setting up Vundle - the best vim plugin manager
-let iCanHazVundle=1
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-if !filereadable(vundle_readme)
-    echo "Installing Vundle..."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/vundle
-    let iCanHazVundle=0
+if !has('nvim')
+  set viminfo+=n~/vim/viminfo
+else
+  " Do nothing here to use the neovim default
+  " or do soemething like:
+  " set viminfo+=n~/.shada
 endif
 
-filetype off
-imap jj <Esc>
-let g:snipMate = { 'snippet_version' : 1 }
-
-
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Plugins
-Plugin 'VundleVim/Vundle.vim'
+" Setting up vim-plug
+call plug#begin('~/.vim/plugged')
 
 " ============================================================================
 " Active plugins
@@ -41,58 +30,63 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugins from github repos:
 
 " Better file browser
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " Code commenter
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 " Class/module browser
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 " Code and files fuzzy finder
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Extension to ctrlp, for fuzzy command finder
-Plugin 'fisadev/vim-ctrlp-cmdpalette'
+Plug 'fisadev/vim-ctrlp-cmdpalette'
 " Zen coding
-Plugin 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 " A Git wrapper so awesome
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Tab management for Vim
-Plugin 'kien/tabman.vim'
+Plug 'kien/tabman.vim'
 " Airline
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Consoles as buffers
-Plugin 'rosenfeld/conque-term'
+Plug 'rosenfeld/conque-term'
 " Pending tasks list
-Plugin 'fisadev/FixedTaskList.vim'
+Plug 'fisadev/FixedTaskList.vim'
 " Surround
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " Autoclose
-Plugin 'Townk/vim-autoclose'
+Plug 'Townk/vim-autoclose'
 " Indent text object
-Plugin 'michaeljsmith/vim-indent-object'
+Plug 'michaeljsmith/vim-indent-object'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
-Plugin 'python-mode/python-mode'
+Plug 'python-mode/python-mode'
 " Better autocompletion
-Plugin 'Shougo/neocomplcache.vim'
+Plug 'Shougo/neocomplcache.vim'
 " Snippets manager (SnipMate), dependencies, and snippets repo
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'honza/vim-snippets'
-Plugin 'garbas/vim-snipmate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'honza/vim-snippets'
+Plug 'garbas/vim-snipmate'
 " awesome colorscheme
-Plugin 'tomasr/molokai'
+Plug 'tomasr/molokai'
 " Git/mercurial/others diff icons on the side of the file lines
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 " Automatically sort python imports
-Plugin 'fisadev/vim-isort'
+Plug 'fisadev/vim-isort'
 " Drag visual blocks arround
-Plugin 'fisadev/dragvisuals.vim'
+Plug 'fisadev/dragvisuals.vim'
 " Window chooser
-Plugin 't9md/vim-choosewin'
+Plug 't9md/vim-choosewin'
 " Python and other languages code checker
-Plugin 'vim-syntastic/syntastic'
+function! Installjshint(info)
+  if a:info.status == 'installed' || a:info.force
+    !npm install -g jshint
+  endif
+endfunction
+Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
 " Paint css colors with the real color
-Plugin 'lilydjwg/colorizer'
+Plug 'lilydjwg/colorizer'
 " Relative numbering of lines (0 is the current line)
 " Require Vim 7.3+
 " Plugin 'myusuf3/numbers.vim'
@@ -100,70 +94,82 @@ Plugin 'lilydjwg/colorizer'
 " javascript complete after install the plugin, you must cd the install
 " directory and run `npm install`, then add a .tern-project config file
 " the doc at http://ternjs.net/doc/manual.html#vim
-Plugin 'ternjs/tern_for_vim'
+function! BuildTern(info)
+  if a:info.status == 'installed' || a:info.force
+    !npm install
+  endif
+endfunction
+
+Plug 'ternjs/tern_for_vim', { 'do': function('BuildTern') }
 " Golang Plugins
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
 " JSX syntax highlight.
-Plugin 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx'
 " Markdown syntastic highlight
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " Markdown realtime preview
 " Before you want to use it, please run
 " `sudo npm -g install instant-markdown-d`
-Plugin 'suan/vim-instant-markdown'
+Plug 'suan/vim-instant-markdown'
 " Handlebars syntax highlighting
-Plugin 'mustache/vim-mustache-handlebars'
+Plug 'mustache/vim-mustache-handlebars'
 " Vue.js syntax and highlighting
-Plugin 'tao12345666333/vim-vue'
+Plug 'tao12345666333/vim-vue'
 " True Sublime Text style multiple selections for Vim
-Plugin 'terryma/vim-multiple-cursors'
+Plug 'terryma/vim-multiple-cursors'
 " Modern database interface for Vim
-Plugin 'tpope/vim-dadbod'
+Plug 'tpope/vim-dadbod'
 " Dockerfile support
-Plugin 'ekalinin/Dockerfile.vim'
+Plug 'ekalinin/Dockerfile.vim'
 
 " Plugins from vim-scripts repos:
 
 " Search results counter
-Plugin 'IndexedSearch'
+Plug 'henrik/vim-indexed-search'
 " XML/HTML tags navigation
-Plugin 'matchit.zip'
+Plug 'benjifisher/matchit.zip'
 " Gvim colorscheme
-Plugin 'Wombat'
+Plug 'vim-scripts/Wombat'
 " Yank history navigation
-Plugin 'YankRing.vim'
+Plug 'vim-scripts/YankRing.vim'
 
-" Ruby on Rails
-Plugin 'tpope/vim-rails'
-Plugin 'mhartington/oceanic-next'
-Plugin 'tpope/vim-bundler'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'doums/darcula'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-ragtag'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
+" Ruby and Ruby on Rails
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-bundler'
+Plug 'thoughtbot/vim-rspec'
+Plug 'ecomba/vim-ruby-refactoring'
+Plug 'doums/darcula'
+Plug 'tpope/vim-ragtag'
+Plug 'vim-ruby/vim-ruby'
+Plug 'jiangmiao/auto-pairs'
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'tpope/vim-haml'
+Plug 'pocke/rbs.vim'
+Plug 'glepnir/oceanic-material'
+Plug 'sunaku/vim-ruby-minitest'
+Plug 'slim-template/vim-slim'
 
-" ============================================================================
-" Install plugins the first time vim runs
+" ReactJS and JS
+Plug 'mlaursen/vim-react-snippets'
+Plug 'pangloss/vim-javascript'
+Plug 'chemzqm/vim-jsx-improve'
+Plug 'prettier/vim-prettier'
+Plug 'jparise/vim-graphql'
+Plug 'styled-components/vim-styled-components'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'sheerun/vim-json'
 
-if iCanHazVundle == 0
-    echo "Installing Plugins, please ignore key map error messages"
-    echo ""
-    :PluginInstall
-endif
+
+"  ============================================================================
 
 " ============================================================================
 " Vim settings and mappings
 " You can edit them as you wish
 
-" allow plugins by file type (required for plugins!)
-filetype plugin on
-filetype indent on
+call plug#end()
 
 " tabs and spaces handling
 set expandtab
@@ -263,17 +269,19 @@ nmap ,wR :RecurGrep <cword><CR>
 nmap ,wr :RecurGrepFast <cword><CR>
 
 " use 256 colors when possible
-if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-	let &t_Co = 256
-    " colorscheme darcula
-    let g:material_terminal_italics = 1
-    let g:material_theme_style = 'palenight'
-    colorscheme material
+let g:material_terminal_italics = 1
+let g:material_theme_style = 'palenight'
+colorscheme material
 
-    " colorscheme OceanicNext
-else
-    colorscheme delek
-endif
+"if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
+	"let &t_Co = 256
+    "" colorscheme darcula
+    "let g:material_terminal_italics = 1
+    "let g:material_theme_style = 'palenight'
+    "colorscheme material
+"else
+    "colorscheme delek
+"endif
 
 " colors for gvim
 if has('gui_running')
@@ -294,7 +302,6 @@ set backup                        " make backup files
 set backupdir=~/.vim/dirs/backups " where to put backup files
 set undofile                      " persistent undos - undo after you re-open the file
 set undodir=~/.vim/dirs/undos
-set viminfo+=n~/.vim/dirs/viminfo
 " store yankring history file there too
 let g:yankring_history_dir = '~/.vim/dirs/'
 
@@ -341,7 +348,7 @@ map <F2> :TaskList<CR>
 let g:ctrlp_map = ',e'
 " hidden some types files
 let g:ctrlp_show_hidden = 1
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif           "Linux
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif,/node_modules          "Linux
 " tags (symbols) in current file finder mapping
 nmap ,g :CtrlPBufTag<CR>
 " tags (symbols) in all files finder mapping
@@ -369,7 +376,7 @@ nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
 let g:ctrlp_working_path_mode = 0
 " ignore these files and folders on file finder
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|\.hg|\.svn)$',
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
   \ 'file': '\.pyc$\|\.pyo$',
   \ }
 
@@ -583,14 +590,19 @@ let g:snipMate = { 'snippet_version' : 1 }
 set termguicolors
 let g:user_emmet_expandabbr_key='<Tab>'
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+ let g:user_emmet_settings = {
+  \  'javascript' : {
+  \      'extends' : 'jsx',
+  \  },
+  \  'erb' : {
+  \    'extends' : 'html',
+  \  },
+  \  'haml' : {
+  \    'extends' : 'html',
+  \  },
+  \ 'typescript' : {
+  \     'extends' : 'jsx',
+  \ },
+  \}
+:autocmd InsertEnter,InsertLeave * set cul!
 
-if has("autocmd")
-  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
-  au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' |
-    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
-    \ elseif v:insertmode == 'r' |
-    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
-    \ endif
-  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
-endif

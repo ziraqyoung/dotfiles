@@ -89,12 +89,12 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
+   export EDITOR='nvim'
  else
    export EDITOR='subl'
  fi
 
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # Compilation flags
@@ -122,8 +122,8 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
-alias v="vim"
-alias tdev="tmux new -s development"
+alias v="nvim"
+alias tdev="tmux new -s ziraq"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
