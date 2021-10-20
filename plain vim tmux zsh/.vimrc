@@ -9,8 +9,19 @@ scriptencoding utf-8
 " Vundle initialization
 " Avoid modify this section, unless you are very sure of what you are doing
 
+" Make <SPACE> leader key
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
+" make sure you run `sudo apt install vim-gtk`
+set clipboard=unnamedplus
+
 " no vi-compatible
 set nocompatible
+
+filetype on " Enable filetype detection
+filetype indent on " Enable filetype-specific indenting
+filetype plugin on " Enable filetype-specific plugins
 
 if !has('nvim')
   set viminfo+=n~/vim/viminfo
@@ -61,8 +72,6 @@ Plug 'michaeljsmith/vim-indent-object'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
 Plug 'python-mode/python-mode'
-" Better autocompletion
-Plug 'Shougo/neocomplcache.vim'
 " Snippets manager (SnipMate), dependencies, and snippets repo
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -78,13 +87,14 @@ Plug 'fisadev/vim-isort'
 Plug 'fisadev/dragvisuals.vim'
 " Window chooser
 Plug 't9md/vim-choosewin'
+" Ale as linter
+Plug 'dense-analysis/ale'
 " Python and other languages code checker
 function! Installjshint(info)
   if a:info.status == 'installed' || a:info.force
     !npm install -g jshint
   endif
 endfunction
-Plug 'scrooloose/syntastic', { 'do': function('Installjshint') }
 " Paint css colors with the real color
 Plug 'lilydjwg/colorizer'
 " Relative numbering of lines (0 is the current line)
@@ -96,7 +106,7 @@ Plug 'lilydjwg/colorizer'
 " the doc at http://ternjs.net/doc/manual.html#vim
 function! BuildTern(info)
   if a:info.status == 'installed' || a:info.force
-    !npm install
+    npm install -g tern
   endif
 endfunction
 
@@ -135,13 +145,13 @@ Plug 'vim-scripts/Wombat'
 Plug 'vim-scripts/YankRing.vim'
 
 " Ruby and Ruby on Rails
+Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
 Plug 'thoughtbot/vim-rspec'
 Plug 'ecomba/vim-ruby-refactoring'
 Plug 'doums/darcula'
 Plug 'tpope/vim-ragtag'
-Plug 'vim-ruby/vim-ruby'
 Plug 'jiangmiao/auto-pairs'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'tpope/vim-haml'
@@ -149,6 +159,7 @@ Plug 'pocke/rbs.vim'
 Plug 'glepnir/oceanic-material'
 Plug 'sunaku/vim-ruby-minitest'
 Plug 'slim-template/vim-slim'
+Plug 'tpope/vim-endwise'
 
 " ReactJS and JS
 Plug 'mlaursen/vim-react-snippets'
@@ -161,6 +172,19 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'sheerun/vim-json'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+Plug 'SirVer/ultisnips'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+
 
 
 "  ============================================================================
@@ -188,7 +212,7 @@ set autoread
 set confirm
 " no backup files
 set nobackup
-" other settings 
+" other settings
 set langmenu=zh_CN.UTF-8
 set mouse=a
 set whichwrap+=<,>,h,l,[,]
@@ -216,7 +240,7 @@ set incsearch
 set hlsearch
 " search ignore case
 set ignorecase
-" muting search highlighting 
+" muting search highlighting
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " syntax highlight on
@@ -228,8 +252,8 @@ set nu
 " tab navigation mappings
 map tn :tabn<CR>
 map tp :tabp<CR>
-map tm :tabm 
-map tt :tabnew 
+map tm :tabm
+map tt :tabnew
 map ts :tab split<CR>
 map <C-S-Right> :tabn<CR>
 imap <C-S-Right> <ESC>:tabn<CR>
@@ -262,16 +286,19 @@ ca w!! w !sudo tee "%"
 command! -nargs=1 RecurGrep lvimgrep /<args>/gj ./**/*.* | lopen | set nowrap
 command! -nargs=1 RecurGrepFast silent exec 'lgrep! <q-args> ./**/*.*' | lopen
 " mappings to call them
-nmap ,R :RecurGrep 
-nmap ,r :RecurGrepFast 
+nmap ,R :RecurGrep
+nmap ,r :RecurGrepFast
 " mappings to call them with the default word as search text
 nmap ,wR :RecurGrep <cword><CR>
 nmap ,wr :RecurGrepFast <cword><CR>
 
 " use 256 colors when possible
+let &t_Co = 256
+
 let g:material_terminal_italics = 1
 let g:material_theme_style = 'palenight'
 colorscheme material
+
 
 "if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
 	"let &t_Co = 256
@@ -320,14 +347,14 @@ endif
 " Plugins settings and mappings
 " Edit them as you wish.
 
-" Tagbar ----------------------------- 
+" Tagbar -----------------------------
 
 " toggle tagbar display
 map <F4> :TagbarToggle<CR>
 " autofocus on tagbar open
 let g:tagbar_autofocus = 1
 
-" NERDTree ----------------------------- 
+" NERDTree -----------------------------
 
 " toggle nerdtree display
 map <F3> :NERDTreeToggle<CR>
@@ -338,6 +365,9 @@ let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 
 
 " Tasklist ------------------------------
+
+" Deoplete Settings
+let g:deoplete#enable_at_startup = 1
 
 " show pending tasks list
 map <F2> :TaskList<CR>
@@ -380,31 +410,13 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.pyc$\|\.pyo$',
   \ }
 
-" Syntastic ------------------------------
-
-" show list of errors and warnings on the current file
-nmap <leader>e :Errors<CR>
-" turn to next or previous errors, after open errors list
-nmap <leader>n :lnext<CR>
-nmap <leader>p :lprevious<CR>
-" check also when just opened the file
-let g:syntastic_check_on_open = 1
-" syntastic checker for javascript.
-" eslint is the only tool support JSX.
-" If you don't need write JSX, you can use jshint.
-" And eslint is slow, but not a hindrance
-" let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_javascript_checkers = ['eslint']
-" don't put icons on the sign column (it hides the vcs status icons of signify)
-let g:syntastic_enable_signs = 0
-" custom icons (enable them if you use a patched font, and enable the previous 
-" setting)
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_quiet_messages = {
-    \ "regex":   'invalid-name\|missing-docstring'}
+" Ale linter ------------------------------
+let g:ale_sign_error = "◉"
+let g:ale_sign_warning = "◉"
+let g:ale_set_signs = 1
+let g:ale_set_highlights = 0
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
 " Python-mode ------------------------------
 
@@ -421,50 +433,6 @@ let g:pymode_rope_goto_definition_bind = ',d'
 let g:pymode_rope_goto_definition_cmd = 'e'
 nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
 nmap ,o :RopeFindOccurrences<CR>
-
-" NeoComplCache ------------------------------
-
-" most of them not documented because I'm not sure how they work
-" (docs aren't good, had to do a lot of trial and error to make 
-" it play nice)
-
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_ignore_case = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_auto_select = 1
-
-let g:neocomplcache_enable_fuzzy_completion = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_fuzzy_completion_start_length = 1
-let g:neocomplcache_auto_completion_start_length = 1
-let g:neocomplcache_manual_completion_start_length = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_keyword_length = 1
-let g:neocomplcache_min_syntax_length = 1
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-" complete with workds from any opened file
-let g:neocomplcache_same_filetype_lists = {}
-let g:neocomplcache_same_filetype_lists._ = '_'
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 " TabMan ------------------------------
 
@@ -550,7 +518,7 @@ function SetTitle()
     elseif &filetype == 'python'
         call setline(1,"#!/usr/bin/env python")
         call append(line("."),"# coding=utf-8")
-	    call append(line(".")+1, "") 
+	    call append(line(".")+1, "")
 
     elseif &filetype == 'ruby'
         call setline(1,"#!/usr/bin/env ruby")
@@ -588,8 +556,7 @@ let g:instant_markdown_autostart = 0
 imap jj <Esc>
 let g:snipMate = { 'snippet_version' : 1 }
 set termguicolors
-let g:user_emmet_expandabbr_key='<Tab>'
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+let g:user_emmet_leader_key=','
  let g:user_emmet_settings = {
   \  'javascript' : {
   \      'extends' : 'jsx',
@@ -606,3 +573,29 @@ imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
   \}
 :autocmd InsertEnter,InsertLeave * set cul!
 
+" Plugin key-mappings.
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+
+let g:UltiSnipsExpandTrigger = "<Tab>"
+let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
+
+let g:ulti_expand_or_jump_res = 0
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+let g:endwise_no_mappings = 1
+let g:AutoPairsMapCR = 0
+
+function! s:check_last_char_was_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
