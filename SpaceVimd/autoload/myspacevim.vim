@@ -24,14 +24,14 @@ function! myspacevim#before() abort
   \}
 
   autocmd FileType html,css,javascriptreact,javascript.jsx,javascript EmmetInstall
+  
   let g:user_emmet_mode='a'
   " let g:user_emmet_install_global = 0 
 
   imap jj <Esc>
   set clipboard=unnamedplus
 
-  let g:defx_icons_enable_syntax_highlight = 0
- 
+  let g:defx_icons_enable_syntax_highlight = 0 
 
   nmap <silent> gi <Plug>(coc-implementation)
 
@@ -78,6 +78,7 @@ function! myspacevim#after() abort
   \}
 
   autocmd FileType html,css,javascriptreact,javascript.jsx,javascript EmmetInstall
+ 
   let g:user_emmet_mode='a'
   " let g:user_emmet_install_global = 0
 
