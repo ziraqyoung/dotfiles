@@ -1,12 +1,12 @@
 function! myspacevim#before() abort
-  set listchars=tab:▸\ ,eol:¬,nbsp:·
-  set wrap
+  set listchars=eol:¬,nbsp:·
   set list
-  set showbreak=↪
+  set wrap
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
 
   imap ,, <C-y>,
   " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+
 
   let g:user_emmet_settings = {
   \  'javascript' : {
@@ -24,14 +24,36 @@ function! myspacevim#before() abort
   \}
 
   autocmd FileType html,css,javascriptreact,javascript.jsx,javascript EmmetInstall
-  
+
   let g:user_emmet_mode='a'
   " let g:user_emmet_install_global = 0 
 
   imap jj <Esc>
-  set clipboard=unnamedplus
 
-  let g:defx_icons_enable_syntax_highlight = 0 
+  let g:oceanic_material_background = 'ocean'
+	let g:oceanic_material_allow_bold = 1
+	let g:oceanic_material_allow_italic = 1
+	let g:oceanic_material_allow_undercurl = 1
+	let g:oceanic_material_allow_underline = 1
+
+  let g:gruvbox_material_enable_italic = 1
+  " let g:gruvbox_material_background = 'soft' " soft, hard, medium(default)
+  let g:gruvbox_material_enable_bold = 1
+
+  let g:everforest_background = 'hard'
+  let g:everforest_enable_italic = 1
+  let g:everforest_disable_italic_comment = 1
+
+	" highlight ALEError ctermbg=none ctermfg=none
+	" highlight ALEWarning ctermbg=none ctermfg=none
+	
+  let g:ale_set_signs = 1
+  let g:ale_set_highlights = 0
+
+  highlight ALEError ctermbg=NONE ctermfg=none
+  highlight ALEWarning ctermbg=NONE ctermfg=none
+	highlight ALEErrorSign ctermbg=NONE ctermfg=red
+	highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
   nmap <silent> gi <Plug>(coc-implementation)
 
@@ -50,13 +72,9 @@ function! myspacevim#before() abort
 
 endf
 
-
 function! myspacevim#after() abort
-  set listchars=tab:▸\ ,eol:¬,nbsp:·
-  set wrap
-  set list
-  set showbreak=↪
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
+
   hi Comment guifg=#5C6370 ctermfg=59
 
   imap ,, <C-y>,
@@ -78,15 +96,24 @@ function! myspacevim#after() abort
   \}
 
   autocmd FileType html,css,javascriptreact,javascript.jsx,javascript EmmetInstall
- 
+
   let g:user_emmet_mode='a'
   " let g:user_emmet_install_global = 0
 
-
   imap jj <Esc>
-  set clipboard=unnamedplus
 
-  let g:defx_icons_enable_syntax_highlight = 0
+  " hi LineNr ctermbg=NONE guibg=NONE
+
+  " let g:ale_sign_error = "◉"
+	" let g:ale_sign_warning = "◉"
+
+  let g:ale_set_signs = 1
+  let g:ale_set_highlights = 0
+
+  highlight ALEError ctermbg=NONE ctermfg=none
+  highlight ALEWarning ctermbg=NONE ctermfg=none
+	highlight ALEErrorSign ctermbg=NONE ctermfg=red
+	highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
   nmap <silent> gi <Plug>(coc-implementation)
 
@@ -102,5 +129,4 @@ function! myspacevim#after() abort
       execute '!' . &keywordprg . " " . expand('<cword>')
     endif
   endfunction
-
 endf

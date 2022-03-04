@@ -30,6 +30,12 @@ let s:coc_extensions = [
 			 \ 'coc-actions',
 			 \ 'coc-docker',
 			 \ 'coc-svg',
+			 \ 'coc-pairs',
+			 \ 'coc-prettier',
+			 \ 'coc-calc',
+			 \ 'coc-html',
+			 \ '@yaegassy/coc-nginx',
+			 \ 'coc-jest',
 			\]
 
 for extension in s:coc_extensions

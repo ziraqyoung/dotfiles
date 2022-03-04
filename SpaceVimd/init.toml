@@ -1,6 +1,6 @@
 #=============================================================================
 # dark_powered.toml --- dark powered configuration example for SpaceVim
-# Copyright (c) 2016-2017 Wang Shidong & Contributors
+# Copyright (c) 2016-2022 Wang Shidong & Contributors
 # Author: Wang Shidong < wsdjeg at 163.com >
 # URL: https://spacevim.org
 # License: GPLv3
@@ -8,28 +8,29 @@
 
 # All SpaceVim option below [option] section
 [options]
-    # set spacevim theme. by default colorscheme layer is not loaded,
+  # set spacevim theme. by default colorscheme layer is not loaded,
     # if you want to use more colorscheme, please load the colorscheme
     # layer
     autocomplete_method = "coc"
     snippet_engine = "ultisnips"
-
     filemanager = "defx"
-
     lint_engine = "ale"
-
-    colorscheme = "oceanic_material"
-    # colorscheme = "gruvbox"
-    # colorscheme = "darcula"
-
     colorscheme_bg = "dark"
+
+    # colorscheme = "oceanic_material"
+    # colorscheme = "gruvbox-material"
+    # colorscheme = "gruvbox"
+    # colorscheme = "everforest"
+    colorscheme = "onedark"
 
     # enable_cursorcolumn = true
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
     enable_guicolors = true
+
     # sidebar_width = 33
     # relativenumber=false
+
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     # options for statusline
@@ -46,32 +47,7 @@
     # 3: 1 ➛ ¹
     # 4: 1 ➛ 1
 
-    #left sections of statusline
-    # statusline_left_sections = [
-
-    # enable_cursorcolumn = true
-    # Disable guicolors in basic mode, many terminal do not support 24bit
-    # true colors
-    enable_guicolors = true
-    # sidebar_width = 33
-    # relativenumber=false
-    # Disable statusline separator, if you want to use other value, please
-    # install nerd fonts
-    # options for statusline
-    # Set the statusline separators of statusline, default is "arrow"
-    statusline_separator = "arrow"
-    # Set the statusline separators of inactive statusline
-    statusline_inactive_separator = "bar"
-
-    # Set SpaceVim buffer index type
-    buffer_index_type = 1
-    # 0: 1 ➛ ➊
-    # 1: 1 ➛ ➀
-    # 2: 1 ➛ ⓵
-    # 3: 1 ➛ ¹
-    # 4: 1 ➛ 1
-
-    #left sections of statusline
+    # left sections of statusline
     # statusline_left_sections = [
        # 'winnr',
        # 'major mode',
@@ -88,62 +64,54 @@
        'cursorpos',
        'percentage',
        'input method',
-       'date',
+       'date',	
        'time'
     ]
 
+    # Display file type icon on the tabline, If you do not have nerd fonts
     enable_tabline_filetype_icon = true
-    enable_vimfiler_filetypeicon = true
-    enable_statusline_mode = false
 
-    # filetree_direction = "left"
+    enable_statusline_mode = true
+
     bootstrap_before = "myspacevim#before"
     bootstrap_after = "myspacevim#after"
 
-# Enable autocomplete layer
-# [[layers]]
-  # name = 'coc'
-  # auto-completion-return-key-behavior = "complete"
-  # auto-completion-tab-key-behavior = "smart"
-
+# Languages and Utilities
 [[layers]]
-  name = "lsp"
-  # filetypes = [
-    # "ruby",
-    # "javascript"
-  # ]
-[[layers]]
-  name = "test"
-
-[[layers]]
-  name = "lang#kotlin"
-
-# [[layers]]
-  # name = "lang#html"
-[[layers]]
-  name = "core#statusline"
-
-[[layers]]
-  name = "autocomplete"
-
-[[layers]]
-  name = 'shell'
-  default_position = 'top'
-  default_height = 50
-
+  name = 'autocomplete'
 [[layers]]
   name = "lang#ruby"
-
+  enabled_linters = ['rubocop', 'rubylint']
+[[layers]]
+  name = "tmux"
+[[layers]]
+  name = "lang#kotlin"
+[[layers]]
+  name = "lang#html"
 # [[layers]]
   # name = "lang#javascript"
   # enable_flow_syntax = true
+# [[layers]]
+  # name = "lang#typescript"
+[[layers]]
+  name = "lang#go"
+[[layers]]
+  name = "lsp"
+[[layers]]
+  name = "lang#markdown"
+[[layers]]
+  name = "test"
+[[layers]]
+  name = "core#statusline"
+[[layers]]
+  name = 'shell'
+  default_position = 'top'
+  default_height = 30
+
+# Custom Plugins
 [[custom_plugins]]
   name= "lambdalisue/glyph-palette.vim"
   merged = 0
-[[custom_plugins]]
-  name = "ctrlpvim/ctrlp.vim"
-  merged = 0
-
 [[custom_plugins]]
   name = "slim-template/vim-slim"
   merged = 0
@@ -185,10 +153,6 @@
 [[custom_plugins]]
   name = 'prettier/vim-prettier'
   merged = 0
-#disable for vim-jsx-improved
-# [[custom_plugins]]
-# name = 'pangloss/vim-javascript'
-# merged = 0
 [[custom_plugins]]
   name = 'chemzqm/vim-jsx-improve'
   merged = 0
@@ -196,15 +160,30 @@
   name = 'mlaursen/vim-react-snippets'
   merged = 0
 
-# themes
+# Themes & Icons
 [[custom_plugins]]
   name = 'glepnir/oceanic-material'
   merged = 0
 [[custom_plugins]]
-  name = 'doums/darcula'
+  name = 'sainnhe/gruvbox-material'
+  merged = 0
+[[custom_plugins]]
+  name = 'sainnhe/everforest'
+  merged = 0
+[[custom_plugins]]
+  name = 'mhartington/oceanic-next'
+  merged = 0
+[[custom_plugins]]
+  name = 'navarasu/onedark.nvim'
   merged = 0
 
 # ctags
+# [[custom_plugins]]
+  # name = 'github/copilot.vim'
+  # merged = 0
+[[custom_plugins]]
+  name = 'sheerun/vim-polyglot'
+  merged = 0
 [[custom_plugins]]
   name = 'tpope/rbenv-ctags'
   merged = 0
