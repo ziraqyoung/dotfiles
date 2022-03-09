@@ -77,7 +77,7 @@ export UPDATE_ZSH_DAYS=30
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git tmux web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize)
 
 source $ZSH/oh-my-zsh.sh
 # User configuration
@@ -91,10 +91,11 @@ source $ZSH/oh-my-zsh.sh
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='nvim'
  else
-   export EDITOR='nvim'
+   export EDITOR='subl'
  fi
 
-export EDITOR='subl'
+export VISUAL=nvim
+export EDITOR="$VISUAL"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -107,11 +108,10 @@ export EDITOR='subl'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source /home/ziraqyoung/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.zshenv
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Android studio paths
@@ -120,9 +120,27 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
 alias v="nvim"
-alias tdev="tmux new -s development"
+alias tdev="tmux new -s ziraq"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Until LinuxBrew is fixed, the following is required.
+# See: https://github.com/Homebrew/linuxbrew/issues/47
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH
+
+## Setup linux brew
+# export LINUXBREWHOME=$HOME/.linuxbrew
+export LINUXBREWHOME=/home/linuxbrew/.linuxbrew
+export PATH=$LINUXBREWHOME/bin:$PATH
+export MANPATH=$LINUXBREWHOME/man:$MANPATH
+export PKG_CONFIG_PATH=$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/ziraqyoung/.sdkman"
+[[ -s "/home/ziraqyoung/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ziraqyoung/.sdkman/bin/sdkman-init.sh"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

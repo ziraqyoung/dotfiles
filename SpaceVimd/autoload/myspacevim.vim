@@ -30,14 +30,14 @@ function! myspacevim#before() abort
 
   imap jj <Esc>
 
-  let g:oceanic_material_background = 'ocean'
+  let g:oceanic_material_background = 'medium'
 	let g:oceanic_material_allow_bold = 1
 	let g:oceanic_material_allow_italic = 1
 	let g:oceanic_material_allow_undercurl = 1
 	let g:oceanic_material_allow_underline = 1
 
   let g:gruvbox_material_enable_italic = 1
-  " let g:gruvbox_material_background = 'soft' " soft, hard, medium(default)
+  let g:gruvbox_material_background = 'soft' " soft, hard, medium(default)
   let g:gruvbox_material_enable_bold = 1
 
   let g:everforest_background = 'hard'
