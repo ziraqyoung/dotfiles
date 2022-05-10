@@ -77,7 +77,7 @@ export UPDATE_ZSH_DAYS=30
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize)
+plugins=(git web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize)
 
 source $ZSH/oh-my-zsh.sh
 # User configuration
@@ -143,4 +143,6 @@ export LD_LIBRARY_PATH=$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/ziraqyoung/.sdkman"
 [[ -s "/home/ziraqyoung/.sdkman/bin/sdkman-init.sh" ]] && source "/home/ziraqyoung/.sdkman/bin/sdkman-init.sh"
+# Ignore all this files when using fzf in spacevim for fuzzy finding
+export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*,tmp/*,public/packs/*}"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
