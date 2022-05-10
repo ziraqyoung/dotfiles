@@ -9,4 +9,5 @@
 - Lint yam files - `sudo apt install yamllint`
 - Lint gitcommit messages - `sudo apt install gitlint`
 - Install docker lint - `npm install -g dockerfile_lint`
+- Tmux Plugin Manager - https://github.com/tmux-plugins/tpm
 
