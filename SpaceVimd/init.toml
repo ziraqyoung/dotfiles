@@ -19,7 +19,7 @@
 
     colorscheme = "oceanic_material"
     # colorscheme = "gruvbox-material"
-    # colorscheme = "hybrid" # palenight, material, jellybeans, one, NeoSolarized, hybrid, SpaceVim, onedark, nord, molokai, srcery
+    # colorscheme = "palenight" # palenight, material, jellybeans, one, NeoSolarized, hybrid, SpaceVim, onedark, nord, molokai, srcery
     # colorscheme = "gruvbox8"
 
     # enable_cursorcolumn = true
@@ -111,8 +111,8 @@
   name = "lang#kotlin"
 [[layers]]
   name = "lang#html"
-[[layers]]
- name = "lang#javascript" # npm install -g eslint, npm install -g js-beautify,  & touch ~/.eslintrc.json see docs
+# [[layers]]
+ # name = "lang#javascript" # npm install -g eslint, npm install -g js-beautify,  & touch ~/.eslintrc.json see docs
 [[layers]]
   name = "lang#go"
 [[layers]]

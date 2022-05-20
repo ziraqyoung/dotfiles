@@ -1,12 +1,17 @@
 function! myspacevim#before() abort
   set listchars=eol:¬,nbsp:·
-  set list
   set wrap
+  set list
+
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
 
   imap ,, <C-y>,
   " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
+  let g:ale_linters = {
+  \  'javascript': ['eslint'],
+  \  'jsx': ['eslint']
+  \}
 
   let g:user_emmet_settings = {
   \  'javascript' : {
@@ -22,19 +27,6 @@ function! myspacevim#before() abort
   \     'extends' : 'jsx',
   \ },
   \}
-
-  let g:neomake_javascript_eslint_maker =  {
-        \ 'exe': 'npx',
-        \ 'args': ['--quiet', 'eslint', '--format=compact'],
-        \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
-        \   '%W%f: line %l\, col %c\, Warning - %m,%-G,%-G%*\d problems%#',
-        \ 'cwd': '%:p:h',
-        \ 'output_stream': 'stdout',
-        \ }
-
-  let g:neomake_javascript_jsx_enabled_makers = ['eslint']
-
-  let g:neoformat_enabled_javascript = ['npxprettier']
 
   autocmd FileType html,css,javascriptreact,javascript.jsx,javascript EmmetInstall
 
@@ -90,8 +82,8 @@ endf
 
 function! myspacevim#after() abort
   set listchars=eol:¬,nbsp:·
-  set list
   set wrap
+  set list
 
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
 
