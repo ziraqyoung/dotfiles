@@ -89,6 +89,10 @@ function! myspacevim#before() abort
 endf
 
 function! myspacevim#after() abort
+  set listchars=eol:¬,nbsp:·
+  set list
+  set wrap
+
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
 
   hi Comment guifg=#5C6370 ctermfg=59
