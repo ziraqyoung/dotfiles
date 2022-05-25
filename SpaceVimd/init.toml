@@ -17,10 +17,11 @@
     lint_engine = "ale"
     colorscheme_bg = "dark"
 
-    colorscheme = "oceanic_material"
+    # colorscheme = "oceanic_material"
     # colorscheme = "gruvbox-material"
     # colorscheme = "palenight" # palenight, material, jellybeans, one, NeoSolarized, hybrid, SpaceVim, onedark, nord, molokai, srcery
     # colorscheme = "gruvbox8"
+    colorscheme = "shades_of_purple"
 
     # enable_cursorcolumn = true
     # Disable guicolors in basic mode, many terminal do not support 24bit
@@ -111,8 +112,8 @@
   name = "lang#kotlin"
 [[layers]]
   name = "lang#html"
-# [[layers]]
- # name = "lang#javascript" # npm install -g eslint, npm install -g js-beautify,  & touch ~/.eslintrc.json see docs
+[[layers]]
+ name = "lang#javascript" # npm install -g eslint, npm install -g js-beautify,  & touch ~/.eslintrc.json see docs
 [[layers]]
   name = "lang#go"
 [[layers]]
@@ -133,19 +134,13 @@
   name= "lambdalisue/glyph-palette.vim"
   merged = 0
 [[custom_plugins]]
-  name = "slim-template/vim-slim"
-  merged = 0
-[[custom_plugins]]
-  name = "sunaku/vim-ruby-minitest"
-  merged = 0
-[[custom_plugins]]
   name = "lilydjwg/colorizer"
-  merged = 0
-[[custom_plugins]]
-  name = "tpope/vim-endwise"
   merged = 0
 
 # React and TypeScript Plugins
+[[custom_plugins]]
+  name = 'sheerun/vim-polyglot'
+  merged = 0
 [[custom_plugins]]
   name = "mattn/emmet-vim"
   merged = 0
@@ -156,13 +151,7 @@
   name = 'MaxMEllon/vim-jsx-pretty'
   merged = 0
 [[custom_plugins]]
-  name = 'peitalin/vim-jsx-typescript'
-  merged = 0
-[[custom_plugins]]
   name = 'HerringtonDarkholme/yats.vim'
-  merged = 0
-[[custom_plugins]]
-  name = 'leafgarland/typescript-vim'
   merged = 0
 [[custom_plugins]]
   name = 'styled-components/vim-styled-components'
@@ -191,16 +180,13 @@
   name = 'lifepillar/vim-gruvbox8'
   merged = 0
 [[custom_plugins]]
-  name = 'yunlingz/equinusocio-material.vim'
+  name = "Rigellute/shades-of-purple.vim"
   merged = 0
 
 # ctags
 # [[custom_plugins]]
   # name = 'github/copilot.vim'
   # merged = 0
-[[custom_plugins]]
-  name = 'sheerun/vim-polyglot'
-  merged = 0
 [[custom_plugins]]
   name = 'tpope/rbenv-ctags'
   merged = 0
@@ -224,4 +210,13 @@
   merged = 0
 [[custom_plugins]]
   name = "pocke/rbs.vim"
+  merged = 0
+[[custom_plugins]]
+  name = "slim-template/vim-slim"
+  merged = 0
+[[custom_plugins]]
+  name = "sunaku/vim-ruby-minitest"
+  merged = 0
+[[custom_plugins]]
+  name = "tpope/vim-endwise"
   merged = 0

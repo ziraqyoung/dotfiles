@@ -8,11 +8,6 @@ function! myspacevim#before() abort
   imap ,, <C-y>,
   " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
-  let g:ale_linters = {
-  \  'javascript': ['eslint'],
-  \  'jsx': ['eslint']
-  \}
-
   let g:user_emmet_settings = {
   \  'javascript' : {
   \      'extends' : 'jsx',
@@ -44,10 +39,6 @@ function! myspacevim#before() abort
   let g:gruvbox_material_enable_italic = 1
   let g:gruvbox_material_background = 'medium' " soft, hard, medium(default)
   let g:gruvbox_material_enable_bold = 1
-
-  let g:everforest_background = 'hard'
-  let g:everforest_enable_italic = 1
-  let g:everforest_disable_italic_comment = 1
 
   let g:material_terminal_italics = 1
   let g:material_theme_style = 'ocean'
@@ -84,8 +75,6 @@ function! myspacevim#after() abort
   set listchars=eol:¬,nbsp:·
   set wrap
   set list
-
-  let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
 
   hi Comment guifg=#5C6370 ctermfg=59
 
