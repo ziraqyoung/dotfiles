@@ -22,7 +22,6 @@ let s:coc_extensions = [
 			 \ 'coc-stylelint',
 			 \ 'coc-tsserver',
 			 \ 'coc-solargraph',
-			 \ 'coc-tailwindcss',
 			 \ '@yaegassy/coc-tailwindcss3',
 			 \ 'coc-snippets',
 			 \ 'coc-tag',
