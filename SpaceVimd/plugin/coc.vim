@@ -23,7 +23,7 @@ let s:coc_extensions = [
 			 \ 'coc-tsserver',
 			 \ 'coc-solargraph',
 			 \ 'coc-tailwindcss',
-			 \ 'https://github.com/ziraqyoung/coc-tailwind-intellisense',
+			 \ '@yaegassy/coc-tailwindcss3',
 			 \ 'coc-snippets',
 			 \ 'coc-tag',
 			 \ 'coc-graphql',
