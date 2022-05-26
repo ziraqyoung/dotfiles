@@ -14,6 +14,8 @@
 
 - Install docker lint - `npm install -g dockerfile_lint`
 
+- For Go and Friends - `go install golang.org/x/tools/gopls@latest` & `go install github.com/jstemmer/gotags@latest`
+
 - Tmux Plugin Manager - https://github.com/tmux-plugins/tpm
 
 - Eslint for JS and Friends:
