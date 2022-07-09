@@ -77,7 +77,7 @@ export UPDATE_ZSH_DAYS=30
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize)
+plugins=(git web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize fzf)
 
 source $ZSH/oh-my-zsh.sh
 # User configuration
@@ -109,6 +109,7 @@ export EDITOR="$VISUAL"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $HOME/.zshenv
+source $HOME/.cargo/env
 
 export NVM_DIR="$HOME/.nvm"
 [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
@@ -136,6 +137,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/
 # export LINUXBREWHOME=$HOME/.linuxbrew
 export LINUXBREWHOME=/home/linuxbrew/.linuxbrew
 export PATH=$LINUXBREWHOME/bin:$PATH
+export PATH=$LINUXBREWHOME/sbin:$PATH
 export MANPATH=$LINUXBREWHOME/man:$MANPATH
 export PKG_CONFIG_PATH=$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH
@@ -146,3 +148,5 @@ export SDKMAN_DIR="/home/ziraqyoung/.sdkman"
 # Ignore all this files when using fzf in spacevim for fuzzy finding
 export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*,tmp/*,public/packs/*}"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

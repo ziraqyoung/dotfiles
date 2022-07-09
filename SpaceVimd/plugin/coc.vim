@@ -23,6 +23,7 @@ let s:coc_extensions = [
 			 \ 'coc-tsserver',
 			 \ 'coc-solargraph',
 			 \ '@yaegassy/coc-tailwindcss3',
+			 \ 'coc-go',
 			 \ 'coc-snippets',
 			 \ 'coc-tag',
 			 \ 'coc-graphql',
@@ -34,7 +35,10 @@ let s:coc_extensions = [
 			 \ 'coc-calc',
 			 \ 'coc-html',
 			 \ '@yaegassy/coc-nginx',
+			 \ 'coc-rust-analyzer',
 			 \ 'coc-jest',
+			 \ 'coc-emmet',
+			 \ 'coc-highlight',
 			\]
 
 for extension in s:coc_extensions

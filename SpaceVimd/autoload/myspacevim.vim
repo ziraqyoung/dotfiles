@@ -30,18 +30,23 @@ function! myspacevim#before() abort
 
   imap jj <Esc>
 
-  let g:oceanic_material_background = 'ocean' " medium, ocean, deep, darker
+  let g:oceanic_material_background = 'medium' " medium, ocean, deep, darker
 	let g:oceanic_material_allow_bold = 1
 	let g:oceanic_material_allow_italic = 1
-	" let g:oceanic_material_allow_undercurl = 1
-	" let g:oceanic_material_allow_underline = 1
 
   let g:gruvbox_material_enable_italic = 1
-  let g:gruvbox_material_background = 'medium' " soft, hard, medium(default)
+  let g:gruvbox_material_background = 'soft' " soft, hard, medium(default)
   let g:gruvbox_material_enable_bold = 1
 
   let g:material_terminal_italics = 1
-  let g:material_theme_style = 'ocean'
+  let g:material_theme_style = 'default-community' " darker, lighter, default, ocean, palenight, palenight-community
+
+
+  let g:edge_style = 'aura' " default, aura, neon
+  let g:edge_enable_italic = 1
+
+  let g:sonokai_style = 'maia' " shusia, maia, espresso, default, atlantis, andromeda
+  let g:sonokai_enable_italic = 1
 
   " highlight ALEError ctermbg=none ctermfg=none
   " highlight ALEWarning ctermbg=none ctermfg=none
@@ -103,6 +108,9 @@ function! myspacevim#after() abort
 
   imap jj <Esc>
 
+  imap ,, <C-y>,
+  " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+
   " hi LineNr ctermbg=NONE guibg=NONE
 
   " let g:ale_sign_error = "◉"
@@ -110,6 +118,10 @@ function! myspacevim#after() abort
 
   let g:ale_set_signs = 1
   let g:ale_set_highlights = 0
+
+  highlight Visual term=bold cterm=bold ctermbg=NONE ctermfg=NONE guibg=Grey40
+  " highlight Visual term=bold cterm=bold ctermfg=NONE guibg=Grey40
+  hi MatchWord ctermfg=NONE cterm=underline gui=underline
 
   highlight ALEError ctermbg=NONE ctermfg=none
   highlight ALEWarning ctermbg=NONE ctermfg=none
