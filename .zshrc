@@ -77,7 +77,7 @@ export UPDATE_ZSH_DAYS=30
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize fzf)
+plugins=(git asdf web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize fzf)
 
 source $ZSH/oh-my-zsh.sh
 # User configuration
@@ -150,3 +150,16 @@ export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{n
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH
+export PATH=$PATH:$GOBIN
+
+export FLYCTL_INSTALL="/home/ziraqyoung/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+# Require by tilix
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte.sh
+fi

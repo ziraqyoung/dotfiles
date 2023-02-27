@@ -12,22 +12,26 @@
     # if you want to use more colorscheme, please load the colorscheme
     # layer
     autocomplete_method = "coc"
-    snippet_engine = "ultisnips"
-    filemanager = "defx"
+    snippet_engine = "ultisnips" # default neosnippets, ultisnips
+    filemanager = "defx" # nerdtree, defx, vimfiler
     lint_engine = "ale"
     colorscheme_bg = "dark"
 
+    # enable_cursorcolumn = true
+    enable_filetree_gitstatus = true
+
     # colorscheme = "oceanic_material"
     # colorscheme = "gruvbox-material"
-    # colorscheme = "molokai" # palenight, material, jellybeans, one, NeoSolarized, hybrid, SpaceVim, onedark, nord, molokai, srcery
-    # colorscheme = "gruvbox8"
-    colorscheme = "material"
+    # colorscheme = "palenight" # palenight, material, jellybeans, one, NeoSolarized, hybrid, SpaceVim, onedark, nord, molokai, srcery
+    # colorscheme = "material"
+    # colorscheme = "onedark"
+    # colorscheme = "tokyodark"
+    # colorscheme = "horizon"
+    colorscheme = "srcery"
 
-    # enable_cursorcolumn = true
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
     enable_guicolors = true
-
     # sidebar_width = 33
     # relativenumber=false
 
@@ -38,25 +42,19 @@
     statusline_separator = "fire"
     # Set the statusline separators of inactive statusline
     statusline_inactive_separator = "bar"
-
     # Set SpaceVim buffer index type
     buffer_index_type = 0
-    # 0: 1 ➛ ➊
-    # 1: 1 ➛ ➀
-    # 2: 1 ➛ ⓵
-    # 3: 1 ➛ ¹
-    # 4: 1 ➛ 1
 
     # left sections of statusline
-    # statusline_left_sections = [
-       # 'winnr',
-       # 'major mode',
-       # 'filename',
-       # 'fileformat',
-       # 'minor mode lighters',
-       # 'version control info',
-       # 'search status'
-    # ]
+    statusline_left_sections = [
+       'winnr',
+       'major mode',
+       'filename',
+       'fileformat',
+       'minor mode lighters',
+       'version control info',
+       'search status'
+    ]
 
     # right sections of statusline
     statusline_right_sections = [
@@ -72,17 +70,34 @@
     enable_tabline_filetype_icon = true
 
     enable_statusline_mode = true
+    # default_indent = 2
+    enable_statusline_bfpath = 1
 
     # ignore node_modules when fuzzy finding
     bootstrap_before = "myspacevim#before"
     bootstrap_after = "myspacevim#after"
 
-
 # Languages and Utilities
 [[layers]]
+  name = "VersionControl"
+[[layers]]
+  name = "default" # Copy/Paste from  clipboard
+[[layers]]
+  name = "denite"
+[[layers]]
   name = "git"
+[[layers]]
+  name = "incsearch"
+[[layers]]
+  name = "treesitter"
 # [[layers]]
   # name = "colorscheme"
+# [[layers]]
+  # name = "format" # enables by default
+[[layers]]
+  name = "fzf"
+[[layers]]
+  name = "sudo"
 [[layers]]
   name = 'edit'
   autosave_timeout = 300000
@@ -91,36 +106,48 @@
   debugger_plugin = "vimspector"
 [[layers]]
   name = 'autocomplete'
-  auto_completion_return_key_behavior = "nil"
   auto_completion_tab_key_behavior = "smart"
+  auto-completion-return-key-behavior = "complete"
 [[layers]]
   name = "tools" # calendar, goyo, limelight, vnoterainbow_parentheses, vimloo
 [[layers]]
   name = "checkers"
-[[layers]]
-  name = "fzf"
-[[layers]] # requires sudo apt install global
-  name = "gtags"
-  gtagslabel = "pygments" # or ctags
+# [[layers]] # requires sudo apt install global
+  # name = "gtags" # sudo apt install global
+  # gtagslabel = "pygments" # or ctags
 [[layers]]
   name = "lang#graphql"
 [[layers]]
-  name = "VersionControl"
-[[layers]]
   name = "lang#ruby"
-  enabled_linters = ['rubocop', 'rubylint']
+  # enabled_linters = ['standardrb', 'rubocop', 'rubylint']
 [[layers]]
   name = "lang#kotlin"
 [[layers]]
   name = "lang#html"
-[[layers]]
- name = "lang#javascript" # npm install -g eslint, npm install -g js-beautify,  & touch ~/.eslintrc.json see docs
+  emmet_filetypes = ['eruby', 'erb', 'ruby']
+# [[layers]]
+ # name = "lang#javascript" # npm install -g eslint js-beautify,  & touch ~/.eslintrc.json see docs
 [[layers]]
   name = "lang#go"
+  format_on_save = true
 [[layers]]
   name = "lang#rust"
+  format_on_save = true
 [[layers]]
   name = "lsp"
+  filetypes = [
+    "rust"
+  ]
+  [layers.override_cmd]
+    rust = ["rust-analyzer"]
+  # filetypes = [
+    # "rust", # rustup component add rls rust-analysis rust-src rustfmt
+    # "javascript", # npm install -g typescript-language-server javascript-typescript-langserver
+    # "css", # npm install -g vscode-css-languageserver-bin
+    # "go", # :GoInstallBinaries then periodically :GoUpdateBinaries
+    # "html", # npm install -g vscode-html-languageserver-bin
+    # "ruby" # gem install solargraph
+  # ]
 [[layers]]
   name = "lang#markdown"
 [[layers]]
@@ -134,10 +161,33 @@
 
 # Custom Plugins
 [[custom_plugins]]
-  name= "lambdalisue/glyph-palette.vim"
+  name = "lilydjwg/colorizer"
   merged = 0
 [[custom_plugins]]
-  name = "lilydjwg/colorizer"
+  name = "kristijanhusak/defx-git"
+  merged = 0
+[[custom_plugins]]
+  name = "kristijanhusak/defx-icons"
+  merged = 0
+
+# Plugins you might KO yourself
+# [[custom_plugins]]
+  # name = "ms-jpq/coq_nvim"
+  # branch = "coq"
+  # merged = 0
+# [[custom_plugins]]
+  # name = "ms-jpq/coq.artifacts"
+  # branch = "artifacts"
+  # merged = 0
+# [[custom_plugins]]
+  # name = "ms-jpq/coq.thirdparty"
+  # branch = "3p"
+  # merged = 0
+[[custom_plugins]]
+  name = 'vimwiki/vimwiki'
+  merged = 0
+[[custom_plugins]]
+  name = 'pseewald/vim-anyfold'
   merged = 0
 
 # React and TypeScript Plugins
@@ -145,10 +195,10 @@
   name = 'sheerun/vim-polyglot'
   merged = 0
 [[custom_plugins]]
-  name = "mattn/emmet-vim"
+  name = 'sheerun/vim-json'
   merged = 0
 [[custom_plugins]]
-  name = 'sheerun/vim-json'
+  name = 'pangloss/vim-javascript'
   merged = 0
 [[custom_plugins]]
   name = 'MaxMEllon/vim-jsx-pretty'
@@ -174,16 +224,31 @@
 
 # Themes & Icons
 [[custom_plugins]]
+  name = 'rktjmp/lush.nvim'
+  merged = 0
+[[custom_plugins]]
   name = 'glepnir/oceanic-material'
   merged = 0
 [[custom_plugins]]
   name = 'sainnhe/gruvbox-material'
   merged = 0
+# [[custom_plugins]]
+  # name = "kaicataldo/material.vim"
+  # merged = 0
 [[custom_plugins]]
-  name = 'lifepillar/vim-gruvbox8'
+  name = "marko-cerovac/material.nvim"
   merged = 0
 [[custom_plugins]]
-  name = "kaicataldo/material.vim"
+  repo = "navarasu/onedark.nvim"
+  merged = 0
+[[custom_plugins]]
+  repo = "tiagovla/tokyodark.nvim"
+  merged = 0
+[[custom_plugins]]
+  repo = "LunarVim/horizon.nvim"
+  merged = 0
+[[custom_plugins]]
+  repo = "srcery-colors/srcery-vim"
   merged = 0
 
 # ctags
@@ -209,6 +274,9 @@
   name = "tpope/vim-haml"
   merged = 0
 [[custom_plugins]]
+  name = "stephpy/vim-yaml"
+  merged = 0
+[[custom_plugins]]
   name = "slim-template/vim-slim"
   merged = 0
 [[custom_plugins]]
@@ -217,3 +285,10 @@
 [[custom_plugins]]
   name = "tpope/vim-endwise"
   merged = 0
+[[custom_plugins]]
+  name = "yaegassy/coc-ruby-syntax-tree"
+  merged = 0
+[[custom_plugins]]
+  name = "yasuhiroki/github-actions-yaml.vim"
+  merged = 0
+
