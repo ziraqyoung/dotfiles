@@ -110,6 +110,7 @@ export EDITOR="$VISUAL"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $HOME/.zshenv
 source $HOME/.cargo/env
+source $HOME/.local/bin
 
 export NVM_DIR="$HOME/.nvm"
 [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
@@ -125,6 +126,7 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
 
 alias v="nvim"
+alias lg="lazygit"
 alias tdev="tmux new -s ziraq"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

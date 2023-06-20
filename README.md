@@ -24,6 +24,10 @@
 
   -  Use **Git-delta** (as git page): `brew install git-delta`
 
+- Tree - `sudo apt install tree`
+
+- Fonts (managers, NerdFont patchers) - `sudo apt install fontforge` & `sudo apt install font-manager`
+
 - Eslint for JS and Friends:
 
   - ```shell
