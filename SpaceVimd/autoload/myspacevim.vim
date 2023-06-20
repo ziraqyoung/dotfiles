@@ -2,6 +2,7 @@ function! myspacevim#before() abort
   " set listchars=eol:¬,nbsp:·
   set wrap
   set list
+  set guicursor=n-v-c-i:block
 
   let g:ctrlp_custom_ignore = 'public/packs*\|log\|tmp\|node_modules\|DS_Store\|\.git'
 
@@ -32,6 +33,8 @@ function! myspacevim#before() abort
   " let g:coq_settings = { 'auto_start': 'shut-up' }
 
   imap jj <Esc>
+  " setup mapping to call :LazyGit
+  nnoremap <silent> <leader>gg :LazyGit<CR>
 
   filetype plugin indent on
   autocmd Filetype * AnyFoldActivate
@@ -86,19 +89,31 @@ function! myspacevim#before() abort
   let g:ale_set_signs = 1
   let g:ale_set_highlights = 0
 
+  let g:vista_default_executive = 'coc'
+  let g:vista_fzf_preview = ['right:80%']
+
+  let g:floaterm_keymap_toggle = '<C-\>'
+  let g:floaterm_width = 0.9
+  let g:floaterm_height = 0.9
+
+  au BufWritePost * lua require('lint').try_lint()
+
   highlight ALEError ctermbg=NONE ctermfg=none
   highlight ALEWarning ctermbg=NONE ctermfg=none
-	highlight ALEErrorSign ctermbg=NONE ctermfg=red
-	highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+  highlight ALEErrorSign ctermbg=NONE ctermfg=red
+  highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 endfunction
 
 function! myspacevim#after() abort
   set wrap
   set list
+  set guicursor=n-v-c-i:block
 
   imap jj <Esc>
-
+  " setup mapping to call :LazyGit
+  nnoremap <silent> <Space>gg :LazyGit<CR>
   imap ,, <C-y>,
+
   " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
   let g:user_emmet_settings = {
   \  'javascript' : {
@@ -135,6 +150,6 @@ function! myspacevim#after() abort
 
   highlight ALEError ctermbg=NONE ctermfg=none
   highlight ALEWarning ctermbg=NONE ctermfg=none
-	highlight ALEErrorSign ctermbg=NONE ctermfg=red
-	highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+  highlight ALEErrorSign ctermbg=NONE ctermfg=red
+  highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 endfunction

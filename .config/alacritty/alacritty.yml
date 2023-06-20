@@ -111,18 +111,26 @@ scrolling:
 font:
   # Normal (roman) font face
   normal:
-    family: Macon
+    # family: Macon
+    # family: JetBrainsMono Nerd Font Mono
+    # family: Liga SFMono Nerd Font
+    # family: SFMono Nerd Font
+    # family: Dank Mono
+    # family: DankMono Nerd Font Mono
+    # family: Hasklug Nerd Font
+    # family: Red Hat Mono
+    family:  FiraMono Nerd Font
+    # family: SauceCodePro Nerd Font
+    # family: InconsolataLGC Nerd Font
+    # family: ComicShannsMono Nerd Font
   # Bold font face
   bold:
-    family: Macon
     style: Bold
   # Italic font face
   italic:
-    family: Macon
     style: Italic
   # Bold italic font face
   bold_italic:
-    family: Macon
     style: Bold Italic
 
   # Point size
@@ -132,7 +140,7 @@ font:
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
     x: 0
-    y: 0
+    y: 3
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
@@ -271,7 +279,7 @@ schemes:
 # Available themes are:
 # see: https://github.com/eendroroy/alacritty-theme
 
-colors: *rigel
+colors: *rigel # argonaut, everforest_dark_soft  moonlight_ii_vscode, rigel
 
 #######################################
 ##       END OF COLOR SCHEMES        ##

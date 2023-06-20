@@ -14,7 +14,7 @@
     autocomplete_method = "coc"
     snippet_engine = "ultisnips" # default neosnippets, ultisnips
     filemanager = "defx" # nerdtree, defx, vimfiler
-    lint_engine = "ale"
+    # lint_engine = "ale"
     colorscheme_bg = "dark"
 
     # enable_cursorcolumn = true
@@ -23,11 +23,14 @@
     # colorscheme = "oceanic_material"
     # colorscheme = "gruvbox-material"
     # colorscheme = "palenight" # palenight, material, jellybeans, one, NeoSolarized, hybrid, SpaceVim, onedark, nord, molokai, srcery
-    # colorscheme = "material"
     # colorscheme = "onedark"
     # colorscheme = "tokyodark"
     # colorscheme = "horizon"
-    colorscheme = "srcery"
+    # colorscheme = "srcery"
+    # colorscheme = "melange"
+    # colorscheme = "mellifluous"
+    # colorscheme = "nova"
+    colorscheme = "kanagawa-wave"
 
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
@@ -81,6 +84,9 @@
 [[layers]]
   name = "VersionControl"
 [[layers]]
+  name = "checkers"
+  enable = false
+[[layers]]
   name = "default" # Copy/Paste from  clipboard
 [[layers]]
   name = "denite"
@@ -88,8 +94,6 @@
   name = "git"
 [[layers]]
   name = "incsearch"
-[[layers]]
-  name = "treesitter"
 # [[layers]]
   # name = "colorscheme"
 # [[layers]]
@@ -110,11 +114,6 @@
   auto-completion-return-key-behavior = "complete"
 [[layers]]
   name = "tools" # calendar, goyo, limelight, vnoterainbow_parentheses, vimloo
-[[layers]]
-  name = "checkers"
-# [[layers]] # requires sudo apt install global
-  # name = "gtags" # sudo apt install global
-  # gtagslabel = "pygments" # or ctags
 [[layers]]
   name = "lang#graphql"
 [[layers]]
@@ -156,10 +155,15 @@
   name = "core#statusline"
 [[layers]]
   name = 'shell'
-  default_position = 'top'
-  default_height = 30
+  enable = false
 
 # Custom Plugins
+[[custom_plugins]]
+  name = "dense-analysis/ale"
+  merged = 0
+[[custom_plugins]]
+  name = "mfussenegger/nvim-lint"
+  merged = 0
 [[custom_plugins]]
   name = "lilydjwg/colorizer"
   merged = 0
@@ -232,11 +236,8 @@
 [[custom_plugins]]
   name = 'sainnhe/gruvbox-material'
   merged = 0
-# [[custom_plugins]]
-  # name = "kaicataldo/material.vim"
-  # merged = 0
 [[custom_plugins]]
-  name = "marko-cerovac/material.nvim"
+  name = "kaicataldo/material.vim"
   merged = 0
 [[custom_plugins]]
   repo = "navarasu/onedark.nvim"
@@ -250,6 +251,21 @@
 [[custom_plugins]]
   repo = "srcery-colors/srcery-vim"
   merged = 0
+[[custom_plugins]]
+  repo = "savq/melange-nvim"
+  merged = 0
+[[custom_plugins]]
+  repo = "ramojus/mellifluous.nvim"
+  merged = 0
+[[custom_plugins]]
+  repo = "lmburns/kimbox"
+  merged = 0
+[[custom_plugins]]
+  repo = "zanglg/nova.nvim"
+  merged = 0
+[[custom_plugins]]
+  repo = "rebelot/kanagawa.nvim"
+  merged = 0
 
 # ctags
 # [[custom_plugins]]
@@ -260,6 +276,9 @@
   merged = 0
 [[custom_plugins]]
   name = 'tpope/gem-ctags'
+  merged = 0
+[[custom_plugins]]
+  name = 'f-person/git-blame.nvim'
   merged = 0
 [[custom_plugins]]
   name= "tpope/vim-bundler"
@@ -291,4 +310,12 @@
 [[custom_plugins]]
   name = "yasuhiroki/github-actions-yaml.vim"
   merged = 0
-
+[[custom_plugins]]
+  name = "nvim-treesitter/nvim-treesitter"
+  merged = 0
+[[custom_plugins]]
+  name = "voldikss/vim-floaterm"
+  merged = 0
+[[custom_plugins]]
+  name = "kdheepak/lazygit.nvim"
+  merged = 0

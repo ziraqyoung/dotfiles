@@ -123,6 +123,7 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
+
 alias v="nvim"
 alias tdev="tmux new -s ziraq"
 
@@ -132,6 +133,9 @@ alias tdev="tmux new -s ziraq"
 # Until LinuxBrew is fixed, the following is required.
 # See: https://github.com/Homebrew/linuxbrew/issues/47
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH
+
+# Aliases
+alias kittyupdate='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
 
 ## Setup linux brew
 # export LINUXBREWHOME=$HOME/.linuxbrew
@@ -163,3 +167,4 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
+eval "$(rbenv init -)"

@@ -18,6 +18,12 @@
 
 - Tmux Plugin Manager - https://github.com/tmux-plugins/tpm
 
+- LazyGit:
+
+  -  Core: `brew install jesseduffield/lazygit/lazygit`
+
+  -  Use **Git-delta** (as git page): `brew install git-delta`
+
 - Eslint for JS and Friends:
 
   - ```shell
@@ -48,5 +54,4 @@
     ```
 
     
-
 
