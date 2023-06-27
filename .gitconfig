@@ -2,7 +2,7 @@
 	ui = true
 [user]
 	name = ziraq young
-	email = ziraqyoung@outlook.com
+	email = <email>
 [init]
 	defaultBranch = main
 [credential "https://github.com"]

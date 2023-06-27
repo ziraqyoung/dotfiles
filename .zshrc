@@ -112,10 +112,6 @@ source $HOME/.zshenv
 source $HOME/.cargo/env
 source $HOME/.local/bin
 
-export NVM_DIR="$HOME/.nvm"
-[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh  # This loads NVM
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # Android studio paths
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
@@ -169,4 +165,3 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
-eval "$(rbenv init -)"
