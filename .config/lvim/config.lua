@@ -3,9 +3,14 @@ vim.opt.tabstop = 2
 vim.opt.relativenumber = true
 vim.opt.guicursor = "i:block" --  set cursor of insert mode as block.
 
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 99
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldlevel = 99
+
+vim.o.foldcolumn = '1' -- '0' is not bad
+vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 
 -- general
 lvim.log.level = "info"
@@ -19,10 +24,17 @@ lvim.format_on_save = {
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<Space>o"] = ":SymbolsOutline<CR>"
+lvim.keys.normal_mode["<leader>a"] = "<cmd>AerialToggle!<CR>"
+lvim.keys.normal_mode["<leader>rc"] = ":lua require('ror.commands').list_commands()<CR>"
+
 local options = { noremap = true }
 vim.keymap.set("i", "jj", "<Esc>", options)
 lvim.builtin.which_key.mappings["e"] = { "<cmd>NvimTreeFocus<CR>", "Explorer" }
+
+vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>Other<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>OtherSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>OtherVSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>OtherClear<CR>", { noremap = true, silent = true })
 
 -- -- Change theme settings
 lvim.colorscheme = "onedark"
@@ -33,17 +45,72 @@ lvim.colorscheme = "onedark"
 -- After changing plugin config exit and reopen LunarVim, Run :PackerSync
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.lualine.sections.lualine_a = { "mode" }
+lvim.builtin.breadcrumbs.active = true
+
+lvim.builtin.lualine.icons_enabled = true
+-- lvim.builtin.lualine.sections.lualine_a = { "mode" }
+lvim.builtin.lualine.sections.lualine_c = { { "filename", path = 1, file_status = true } }
+
 lvim.builtin.terminal.active = true
+
+-- Nvim-tree
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.diagnostics.enable = true
+
+-- Telescope
+lvim.builtin.telescope.defaults.layout_strategy = 'horizontal'
+lvim.builtin.telescope.defaults.layout_config.prompt_position = "top"
+lvim.builtin.telescope.defaults.layout_config.width = 0.75
+lvim.builtin.telescope.defaults.layout_config.height = 0.80
+lvim.builtin.telescope.defaults.borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+
+-- Show previewer when searching git files with default <leader>f
+lvim.builtin.which_key.mappings["f"] = {
+  require("lvim.core.telescope.custom-finders").find_project_files,
+  "Find File"
+}
+-- Show previewer when searching buffers with <leader>bf
+lvim.builtin.which_key.mappings.b.f = {
+  "<cmd>Telescope buffers<cr>",
+  "Find"
+}
+
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
 -- (TreeSitter) Automatically install syntax highlighting for these languages
-lvim.builtin.treesitter.ensure_installed = {}
+lvim.builtin.treesitter.ensure_installed = { "html", "scss", "javascript", "ruby", "rust", "go", "c", "yaml",
+  "embedded_template" }
 
+local nvim_lsp = require("lspconfig")
+
+nvim_lsp.solargraph.setup {
+  filetypes = { "ruby", "rakefile" },
+  root_dir = nvim_lsp.util.root_pattern("Gemfile", ".git", "."),
+  settings = {
+    solargraph = {
+      autoformat = true,
+      completion = true,
+      diagnostic = true,
+      folding = true,
+      references = true,
+      rename = true,
+      symbols = true
+    }
+  }
+}
+
+lvim.autocommands = {
+  {
+    "BufReadPost",
+    {
+      pattern = { "*.erb", "*.eruby" },
+      command = "set syntax=html",
+    }
+  },
+}
 
 -- Formatting
 -- local formatters = require("lvim.lsp.null-ls.formatters")
@@ -54,11 +121,12 @@ lvim.builtin.treesitter.ensure_installed = {}
 -- Dap
 
 -- Diagnostics
-
 local null_ls = require("null-ls")
+
 local sources = {
   null_ls.builtins.diagnostics.rubocop,
-  null_ls.builtins.diagnostics.erb_lint,
+  null_ls.builtins.diagnostics.erb_lint.with({}),
+  null_ls.builtins.diagnostics.haml_lint.with({}),
 }
 null_ls.register({ sources = sources })
 
@@ -80,21 +148,23 @@ lvim.plugins = {
   -- Testing
   {
     "klen/nvim-test",
-    require('nvim-test').setup {
-      run = true,               -- run tests (using for debug)
-      commands_create = true,   -- create commands (TestFile, TestLast, ...)
-      filename_modifier = ":.", -- modify filenames before tests run(:h filename-modifiers)
-      silent = false,           -- less notifications
-      term = "terminal",        -- a terminal to run ("terminal"|"toggleterm")
-      termOpts = {
-        direction = "vertical", -- terminal's direction ("horizontal"|"vertical"|"float")
-        width = 96,             -- terminal's width (for vertical|float)
-        height = 24,            -- terminal's height (for horizontal|float)
-        go_back = false,        -- return focus to original window after executing
-        stopinsert = "auto",    -- exit from insert mode (true|false|"auto")
-        keep_one = true,        -- keep only one terminal for testing
-      },
-    }
+    config = function()
+      require('nvim-test').setup {
+        run = true,               -- run tests (using for debug)
+        commands_create = true,   -- create commands (TestFile, TestLast, ...)
+        filename_modifier = ":.", -- modify filenames before tests run(:h filename-modifiers)
+        silent = false,           -- less notifications
+        term = "terminal",        -- a terminal to run ("terminal"|"toggleterm")
+        termOpts = {
+          direction = "vertical", -- terminal's direction ("horizontal"|"vertical"|"float")
+          width = 96,             -- terminal's width (for vertical|float)
+          height = 24,            -- terminal's height (for horizontal|float)
+          go_back = false,        -- return focus to original window after executing
+          stopinsert = "auto",    -- exit from insert mode (true|false|"auto")
+          keep_one = true,        -- keep only one terminal for testing
+        },
+      }
+    end
   },
   -- Go language
   "olexsmir/gopher.nvim",
@@ -166,13 +236,64 @@ lvim.plugins = {
   },
   -- Other plugins
   {
+    "kevinhwang91/nvim-ufo", --code folding
+    dependencies = { "kevinhwang91/promise-async" },
+    config = function()
+      local handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = ('  %d '):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, 'MoreMsg' })
+        return newVirtText
+      end
+      require('ufo').setup({
+        fold_virt_text_handler = handler,
+        provider_selector = function(bufnr, filetype, buftype)
+          return { 'treesitter', 'indent' }
+        end
+      })
+    end
+  },
+  {
+    "stevearc/aerial.nvim", -- code outline
+    config = function()
+      require('aerial').setup({
+        on_attach = function(bufnr)
+          vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
+          vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+        end
+      })
+    end
+  },
+  {
     "j-hui/fidget.nvim",
     config = function()
       require("fidget").setup()
     end,
   },
+  -- TreeSitter plugins
   {
-    "windwp/nvim-ts-autotag",
+    "windwp/nvim-ts-autotag", -- autoclose and autorename html tag
     config = function()
       require("nvim-ts-autotag").setup()
     end,
@@ -221,8 +342,30 @@ lvim.plugins = {
   },
   { "ray-x/web-tools.nvim" },
   -- Rails
-  "tpope/vim-rails",
-  "weizheheng/ror.nvim",
+  {
+    "weizheheng/ror.nvim",
+    dependencies = { "rcarriga/nvim-notify", "stevearc/dressing.nvim" },
+    config = function()
+      require("ror").setup({
+      })
+    end
+  },
+  {
+    "tpope/vim-rails",
+    config = function()
+      -- disable autocmd set filetype=eruby.yaml
+      vim.api.nvim_create_autocmd(
+        { 'BufNewFile', 'BufReadPost' },
+        {
+          pattern = { '*.yml' },
+          callback = function()
+            vim.bo.filetype = 'yaml'
+          end
+
+        }
+      )
+    end
+  },
   "tpope/vim-repeat",
   "tpope/vim-endwise",
   "tpope/vim-rake",
@@ -288,21 +431,22 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   {
-    "simrat39/symbols-outline.nvim",
-    config = function()
-      require('symbols-outline').setup()
-    end
-  },
-  {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function() require "lsp_signature".on_attach() end,
   },
   {
-    "phaazon/hop.nvim",
-    lazy = true,
+    "ggandor/leap.nvim", --
+    name = "leap",
     config = function()
-      require("hop").setup()
+      require("leap").add_default_mappings()
+    end,
+  },
+  {
+    "windwp/nvim-spectre", -- search and replace
+    event = "BufRead",
+    config = function()
+      require("spectre").setup()
     end,
   },
   {
@@ -317,27 +461,72 @@ lvim.plugins = {
   },
   {
     "navarasu/onedark.nvim",
-    require('onedark').setup({
-      style = 'deep', -- warm, warmer, cool, deep, dark, darker
-      term_colors = true,
-      ending_tildes = true,
-      code_style = {
-        comments = 'italic',
-        keywords = 'italic,bold',
-        functions = 'italic,bold',
-        strings = 'italic',
-      },
-    })
+    config = function()
+      require('onedark').setup({
+        style = 'deep', -- warm, warmer, cool, deep, dark, darker
+        term_colors = true,
+        ending_tildes = true,
+        code_style = {
+          comments = 'italic',
+          keywords = 'italic,bold',
+          functions = 'italic,bold',
+          strings = 'italic',
+        },
+      })
+    end
   },
   {
     "neanias/everforest-nvim",
-    require("everforest").setup({
-      background = "medium", -- soft, medium, hard
-      italics = false,
-    })
+    config = function()
+      require("everforest").setup({
+        background = "medium", -- soft, medium, hard
+        italics = true,
+      })
+    end
   },
   "marko-cerovac/material.nvim",
   "AlexvZyl/nordic.nvim",
+  {
+    "aca/emmet-ls",
+    config = function()
+      local lspconfig = require("lspconfig")
+      local configs = require("lspconfig/configs")
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      capabilities.textDocument.completion.completionItem.resolveSupport = {
+        properties = {
+          "documentation",
+          "detail",
+          "additionalTextEdits",
+        },
+      }
+
+      if not lspconfig.emmet_ls then
+        configs.emmet_ls = {
+          default_config = {
+            cmd = { "emmet-ls", "--stdio" },
+            filetypes = {
+              "html",
+              "css",
+              "javascript",
+              "typescript",
+              "eruby",
+              "typescriptreact",
+              "javascriptreact",
+              "svelte",
+              "vue",
+            },
+            root_dir = function(fname)
+              return vim.loop.cwd()
+            end,
+            settings = {},
+          },
+        }
+      end
+      lspconfig.emmet_ls.setup({ capabilities = capabilities })
+    end,
+  },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
@@ -349,7 +538,3 @@ lvim.plugins = {
 --   end,
 -- }
 --
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "eruby.yaml",
-  command = "set filetype=yaml",
-})
