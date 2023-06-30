@@ -60,10 +60,13 @@ lvim.builtin.nvimtree.setup.diagnostics.enable = true
 
 -- Telescope
 lvim.builtin.telescope.defaults.layout_strategy = 'horizontal'
-lvim.builtin.telescope.defaults.layout_config.prompt_position = "top"
-lvim.builtin.telescope.defaults.layout_config.width = 0.75
+lvim.builtin.telescope.defaults.sorting_strategy = "ascending"
+lvim.builtin.telescope.defaults.layout_config.width = 0.87
 lvim.builtin.telescope.defaults.layout_config.height = 0.80
+lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
+lvim.builtin.telescope.defaults.layout_config.prompt_position = "top"
 lvim.builtin.telescope.defaults.borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+lvim.builtin.telescope.defaults.path_display = { "truncate" }
 
 -- Show previewer when searching git files with default <leader>f
 lvim.builtin.which_key.mappings["f"] = {
