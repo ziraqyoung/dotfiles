@@ -36,6 +36,17 @@ vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>OtherSplit<CR>", { noremap = tr
 vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>OtherVSplit<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>OtherClear<CR>", { noremap = true, silent = true })
 
+-- Neotest
+lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>",
+  "Test Method" }
+lvim.builtin.which_key.mappings["dM"] = { "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
+  "Test Method DAP" }
+lvim.builtin.which_key.mappings["df"] = {
+  "<cmd>lua require('neotest').run.run({vim.fn.expand('%')})<cr>", "Test Class" }
+lvim.builtin.which_key.mappings["dF"] = {
+  "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>", "Test Class DAP" }
+lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Test Summary" }
+
 -- -- Change theme settings
 lvim.colorscheme = "onedark"
 -- lvim.colorscheme = "everforest"
@@ -44,6 +55,7 @@ lvim.colorscheme = "onedark"
 
 -- After changing plugin config exit and reopen LunarVim, Run :PackerSync
 lvim.builtin.alpha.active = true
+lvim.builtin.dap.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.breadcrumbs.active = true
 
@@ -67,7 +79,20 @@ lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
 lvim.builtin.telescope.defaults.layout_config.prompt_position = "top"
 lvim.builtin.telescope.defaults.borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 lvim.builtin.telescope.defaults.path_display = { "truncate" }
-
+local get_telescope_mappings = function()
+  local actions = require("telescope.actions")
+  return {
+    i = {
+      ["<C-j>"] = actions.move_selection_next,
+      ["<C-k>"] = actions.move_selection_previous,
+    },
+    n = {
+      ["<C-j>"] = actions.move_selection_next,
+      ["<C-k>"] = actions.move_selection_previous,
+    },
+  }
+end
+lvim.builtin.telescope.defaults.mappings = get_telescope_mappings()
 -- Show previewer when searching git files with default <leader>f
 lvim.builtin.which_key.mappings["f"] = {
   require("lvim.core.telescope.custom-finders").find_project_files,
@@ -78,7 +103,6 @@ lvim.builtin.which_key.mappings.b.f = {
   "<cmd>Telescope buffers<cr>",
   "Find"
 }
-
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
@@ -122,6 +146,9 @@ lvim.autocommands = {
 -- })
 
 -- Dap
+local dap = require("dap")
+
+
 
 -- Diagnostics
 local null_ls = require("null-ls")
@@ -148,25 +175,21 @@ lvim.plugins = {
       -- vim.g.gitblame_enabled = 0
     end,
   },
-  -- Testing
+  -- Testing and Dap
   {
-    "klen/nvim-test",
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "olimorris/neotest-rspec"
+    },
     config = function()
-      require('nvim-test').setup {
-        run = true,               -- run tests (using for debug)
-        commands_create = true,   -- create commands (TestFile, TestLast, ...)
-        filename_modifier = ":.", -- modify filenames before tests run(:h filename-modifiers)
-        silent = false,           -- less notifications
-        term = "terminal",        -- a terminal to run ("terminal"|"toggleterm")
-        termOpts = {
-          direction = "vertical", -- terminal's direction ("horizontal"|"vertical"|"float")
-          width = 96,             -- terminal's width (for vertical|float)
-          height = 24,            -- terminal's height (for horizontal|float)
-          go_back = false,        -- return focus to original window after executing
-          stopinsert = "auto",    -- exit from insert mode (true|false|"auto")
-          keep_one = true,        -- keep only one terminal for testing
+      require('neotest').setup({
+        adapters = {
+          require("neotest-rspec")
         },
-      }
+      })
     end
   },
   -- Go language
@@ -191,7 +214,6 @@ lvim.plugins = {
   },
   {
     "simrat39/rust-tools.nvim",
-    -- ft = { "rust", "rs" }, -- IMPORTANT: re-enabling this seems to break inlay-hints
     config = function()
       require("rust-tools").setup {
         tools = {
@@ -238,6 +260,23 @@ lvim.plugins = {
     end,
   },
   -- Other plugins
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    config = function()
+      require("noice").setup({
+        lsp = {
+          hover = {
+            enabled = false
+          },
+          signature = {
+            enabled = false
+          }
+        }
+      })
+    end
+  },
   {
     "kevinhwang91/nvim-ufo", --code folding
     dependencies = { "kevinhwang91/promise-async" },
