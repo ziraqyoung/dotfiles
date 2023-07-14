@@ -27,6 +27,9 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader>a"] = "<cmd>AerialToggle!<CR>"
 lvim.keys.normal_mode["<leader>rc"] = ":lua require('ror.commands').list_commands()<CR>"
 
+lvim.keys.normal_mode["|"] = ":vsplit<CR>"
+lvim.keys.normal_mode["\\"] = ":split<CR>"
+
 local options = { noremap = true }
 vim.keymap.set("i", "jj", "<Esc>", options)
 lvim.builtin.which_key.mappings["e"] = { "<cmd>NvimTreeFocus<CR>", "Explorer" }
@@ -35,6 +38,9 @@ vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>Other<CR>", { noremap = true, s
 vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>OtherSplit<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>OtherVSplit<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>OtherClear<CR>", { noremap = true, silent = true })
+
+-- toggleterm
+vim.api.nvim_set_keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Neotest
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>",
@@ -48,10 +54,10 @@ lvim.builtin.which_key.mappings["dF"] = {
 lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Test Summary" }
 
 -- -- Change theme settings
-lvim.colorscheme = "onedark"
--- lvim.colorscheme = "everforest"
+-- lvim.colorscheme = "onedark"
+lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "nordic"
--- lvim.colorscheme = "material"
+-- lvim.colorscheme = "material-palenight"
 
 -- After changing plugin config exit and reopen LunarVim, Run :PackerSync
 lvim.builtin.alpha.active = true
@@ -79,6 +85,8 @@ lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
 lvim.builtin.telescope.defaults.layout_config.prompt_position = "top"
 lvim.builtin.telescope.defaults.borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 lvim.builtin.telescope.defaults.path_display = { "truncate" }
+
+-- Telescope key mappings(check this to refactor this: https://github.com/rochacbruno/dotfiles)
 local get_telescope_mappings = function()
   local actions = require("telescope.actions")
   return {
@@ -94,16 +102,39 @@ local get_telescope_mappings = function()
 end
 lvim.builtin.telescope.defaults.mappings = get_telescope_mappings()
 -- Show previewer when searching git files with default <leader>f
-lvim.builtin.which_key.mappings["f"] = {
-  require("lvim.core.telescope.custom-finders").find_project_files,
-  "Find File"
-}
+-- lvim.builtin.which_key.mappings["f"] = {
+--   require("lvim.core.telescope.custom-finders").find_project_files,
+--   "Find File"
+-- }
 -- Show previewer when searching buffers with <leader>bf
 lvim.builtin.which_key.mappings.b.f = {
   "<cmd>Telescope buffers<cr>",
   "Find"
 }
-
+lvim.builtin.which_key.mappings["f"] = {
+  name = "Find",
+  b = { "<cmd>Telescope buffers<cr>", "Find buffers" },
+  c = { "<cmd>Telescope grep_string<cr>", "Find for word under cursor" },
+  C = { "<cmd>Telescope commands<cr>", "Find commands" },
+  f = { "<cmd>Telescope find_files<cr>", "Find files" },
+  F = { "<cmd>Telescope find_files hidden=true, no_ignore=true<cr>", "Find all files" },
+  h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
+  i = { "<cmd>lua require('telescope').extensions.media_files.media_files()<cr>", "Media" },
+  k = { "<cmd>Telescope keymaps<cr>", "Find keymaps" },
+  l = { "<cmd>Telescope resume<cr>", "Last Search" },
+  m = { "<cmd>Telescope man_pages<cr>", "Find man pages" },
+  o = { "<cmd>Telescope oldfiles<cr>", "Find history" },
+  r = { "<cmd>Telescope registers<cr>", "Find registers" },
+  s = { "<cmd>:lua require('telescope.builtin').find_files({ search_dirs = {vim.fn.expand('%:p:h')} })<cr>",
+    "Find file in this buffer's working directory" },
+  t = { "<cmd>Telescope themes<cr>", "Find themes" },
+  w = { "<cmd>Telescope live_grep<cr>", "Find words" },
+  W = { function()
+    require("lvim.core.telescope.builtin").live_grep {
+      additional_args = function(args) return vim.list_extend(args, { "--hidden", "--no-ignore" }) end,
+    }
+  end, "Find words in all files" },
+}
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
@@ -146,7 +177,7 @@ lvim.autocommands = {
 -- })
 
 -- Dap
-local dap = require("dap")
+-- local dap = require("dap")
 
 
 
@@ -182,12 +213,14 @@ lvim.plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
-      "olimorris/neotest-rspec"
+      "olimorris/neotest-rspec",
+      -- "zidhuss/neotest-minitest"
     },
     config = function()
       require('neotest').setup({
         adapters = {
-          require("neotest-rspec")
+          require("neotest-rspec"),
+          -- require('neotest-minitest'),
         },
       })
     end
@@ -385,6 +418,16 @@ lvim.plugins = {
   { "ray-x/web-tools.nvim" },
   -- Rails
   {
+    "RRethy/nvim-treesitter-endwise",
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        endwise = {
+          enable = true,
+        },
+      }
+    end
+  },
+  {
     "weizheheng/ror.nvim",
     dependencies = { "rcarriga/nvim-notify", "stevearc/dressing.nvim" },
     config = function()
@@ -409,7 +452,6 @@ lvim.plugins = {
     end
   },
   "tpope/vim-repeat",
-  "tpope/vim-endwise",
   "tpope/vim-rake",
   "tpope/vim-haml",
   "sunaku/vim-ruby-minitest",
@@ -502,33 +544,6 @@ lvim.plugins = {
     build = "npm install --prefix server",
   },
   {
-    "navarasu/onedark.nvim",
-    config = function()
-      require('onedark').setup({
-        style = 'deep', -- warm, warmer, cool, deep, dark, darker
-        term_colors = true,
-        ending_tildes = true,
-        code_style = {
-          comments = 'italic',
-          keywords = 'italic,bold',
-          functions = 'italic,bold',
-          strings = 'italic',
-        },
-      })
-    end
-  },
-  {
-    "neanias/everforest-nvim",
-    config = function()
-      require("everforest").setup({
-        background = "medium", -- soft, medium, hard
-        italics = true,
-      })
-    end
-  },
-  "marko-cerovac/material.nvim",
-  "AlexvZyl/nordic.nvim",
-  {
     "aca/emmet-ls",
     config = function()
       local lspconfig = require("lspconfig")
@@ -569,6 +584,42 @@ lvim.plugins = {
       lspconfig.emmet_ls.setup({ capabilities = capabilities })
     end,
   },
+  {
+    "navarasu/onedark.nvim",
+    config = function()
+      require('onedark').setup({
+        style = 'deep', -- warm, warmer, cool, deep, dark, darker
+        term_colors = true,
+        ending_tildes = true,
+        code_style = {
+          comments = 'italic',
+          keywords = 'italic,bold',
+          functions = 'italic,bold',
+          strings = 'italic',
+        },
+      })
+    end
+  },
+  {
+    "neanias/everforest-nvim",
+    config = function()
+      require("everforest").setup({
+        background = "medium", -- soft, medium, hard
+        italics = true,
+      })
+    end
+  },
+  {
+    "marko-cerovac/material.nvim",
+    config = function()
+      require('material').setup({
+        disable = {
+          colored_cursor = true
+        }
+      })
+    end
+  },
+  "AlexvZyl/nordic.nvim",
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
