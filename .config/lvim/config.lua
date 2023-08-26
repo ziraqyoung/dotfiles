@@ -2,6 +2,11 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
 vim.opt.guicursor = "i:block" --  set cursor of insert mode as block.
+vim.opt.list = true
+vim.opt.listchars = {
+  eol = '⤶',
+  space = '⋅',
+}
 
 -- vim.opt.foldmethod = "expr"
 -- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -24,7 +29,7 @@ lvim.format_on_save = {
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<leader>a"] = "<cmd>AerialToggle!<CR>"
+lvim.keys.normal_mode["<leader>a"] = "<cmd>AerialToggle<CR>"
 lvim.keys.normal_mode["<leader>rc"] = ":lua require('ror.commands').list_commands()<CR>"
 
 lvim.keys.normal_mode["|"] = ":vsplit<CR>"
@@ -40,7 +45,8 @@ vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>OtherVSplit<CR>", { noremap = t
 vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>OtherClear<CR>", { noremap = true, silent = true })
 
 -- toggleterm
-vim.api.nvim_set_keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("t", "<C-v>", "<C-\\><C-n>", { noremap = true, silent = true })
 
 -- Neotest
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>",
@@ -53,11 +59,21 @@ lvim.builtin.which_key.mappings["dF"] = {
   "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>", "Test Class DAP" }
 lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Test Summary" }
 
+-- Noice
+lvim.builtin.which_key.mappings["nl"] = { ":lua require('noice').cmd('last')<CR>", "show last notification" }
+lvim.builtin.which_key.mappings["nh"] = { ":lua require('noice').cmd('history')<CR>", "show notification history" }
+lvim.builtin.which_key.mappings["nd"] = {
+  ":lua require('noice').cmd('dismiss')<CR>", "Dismis all visible notification"
+}
+
 -- -- Change theme settings
 -- lvim.colorscheme = "onedark"
-lvim.colorscheme = "everforest"
+-- lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "nordic"
 -- lvim.colorscheme = "material-palenight"
+lvim.colorscheme = "catppuccin"
+-- lvim.colorscheme = "NeoSolarized"
+-- lvim.colorscheme = "onedark_vivid" -- onelight, onedark_vivid, onedark_dark
 
 -- After changing plugin config exit and reopen LunarVim, Run :PackerSync
 lvim.builtin.alpha.active = true
@@ -128,6 +144,7 @@ lvim.builtin.which_key.mappings["f"] = {
   s = { "<cmd>:lua require('telescope.builtin').find_files({ search_dirs = {vim.fn.expand('%:p:h')} })<cr>",
     "Find file in this buffer's working directory" },
   t = { "<cmd>Telescope themes<cr>", "Find themes" },
+  u = { "<cmd>lua require('telescope').extensions.undo.undo()<cr>", "Telescope undo" },
   w = { "<cmd>Telescope live_grep<cr>", "Find words" },
   W = { function()
     require("lvim.core.telescope.builtin").live_grep {
@@ -139,8 +156,10 @@ lvim.builtin.which_key.mappings["f"] = {
 lvim.builtin.treesitter.auto_install = true
 
 -- (TreeSitter) Automatically install syntax highlighting for these languages
-lvim.builtin.treesitter.ensure_installed = { "html", "scss", "javascript", "ruby", "rust", "go", "c", "yaml",
-  "embedded_template" }
+lvim.builtin.treesitter.ensure_installed = {
+  "html", "scss", "javascript", "ruby", "rust", "go", "c", "yaml",
+  "embedded_template", "json", "markdown", "markdown_inline", "python", "regex", "scss", "typescript", "toml", "lua"
+}
 
 local nvim_lsp = require("lspconfig")
 
@@ -160,15 +179,6 @@ nvim_lsp.solargraph.setup {
   }
 }
 
-lvim.autocommands = {
-  {
-    "BufReadPost",
-    {
-      pattern = { "*.erb", "*.eruby" },
-      command = "set syntax=html",
-    }
-  },
-}
 
 -- Formatting
 -- local formatters = require("lvim.lsp.null-ls.formatters")
@@ -188,6 +198,8 @@ local sources = {
   null_ls.builtins.diagnostics.rubocop,
   null_ls.builtins.diagnostics.erb_lint.with({}),
   null_ls.builtins.diagnostics.haml_lint.with({}),
+  null_ls.builtins.formatting.erb_lint,
+  null_ls.builtins.formatting.erb_format,
 }
 null_ls.register({ sources = sources })
 
@@ -296,7 +308,7 @@ lvim.plugins = {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    dependencies = { "MunifTanjim/nui.nvim" },
+    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
     config = function()
       require("noice").setup({
         lsp = {
@@ -353,12 +365,18 @@ lvim.plugins = {
     "stevearc/aerial.nvim", -- code outline
     config = function()
       require('aerial').setup({
+        layout = {
+          default_direction = "prefer_left",
+        },
         on_attach = function(bufnr)
           vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
           vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
         end
       })
     end
+  },
+  {
+    "debugloop/telescope-undo.nvim"
   },
   {
     "j-hui/fidget.nvim",
@@ -428,8 +446,23 @@ lvim.plugins = {
     end
   },
   {
+    "stevearc/dressing.nvim", -- for ror.nvim plugin
+    config = function()
+      require("dressing").setup({
+        input = {
+          get_config = function()
+            -- disable for NvimTree
+            if vim.api.nvim_buf_get_option(0, "filetype") == "NvimTree" then
+              return { enabled = false }
+            end
+          end,
+        },
+      })
+    end
+  },
+  {
     "weizheheng/ror.nvim",
-    dependencies = { "rcarriga/nvim-notify", "stevearc/dressing.nvim" },
+    dependencies = { "rcarriga/nvim-notify" },
     config = function()
       require("ror").setup({
       })
@@ -461,6 +494,7 @@ lvim.plugins = {
   },
   {
     "kylechui/nvim-surround",
+    event = "VeryLazy",
     config = function()
       require("nvim-surround").setup({
         -- Configuration here, or leave empty to use defaults
@@ -585,27 +619,27 @@ lvim.plugins = {
     end,
   },
   {
-    "navarasu/onedark.nvim",
-    config = function()
-      require('onedark').setup({
-        style = 'deep', -- warm, warmer, cool, deep, dark, darker
-        term_colors = true,
-        ending_tildes = true,
-        code_style = {
-          comments = 'italic',
-          keywords = 'italic,bold',
-          functions = 'italic,bold',
-          strings = 'italic',
-        },
-      })
-    end
+    -- "navarasu/onedark.nvim",
+    -- config = function()
+    --   require('onedark').setup({
+    --     style = 'deep', -- warm, warmer, cool, deep, dark, darker
+    --     term_colors = true,
+    --     ending_tildes = true,
+    --     code_style = {
+    --       comments = 'italic',
+    --       -- keywords = 'italic,bold',
+    --       functions = 'bold',
+    --       -- strings = 'italic',
+    --     },
+    --   })
+    -- end
   },
   {
     "neanias/everforest-nvim",
     config = function()
       require("everforest").setup({
         background = "medium", -- soft, medium, hard
-        italics = true,
+        -- italics = true,
       })
     end
   },
@@ -619,7 +653,67 @@ lvim.plugins = {
       })
     end
   },
-  "AlexvZyl/nordic.nvim",
+  {
+    "catppuccin/nvim",
+    config = function()
+      require("catppuccin").setup({
+        flavour = "macchiato",     -- latte, frappe, macchiato, mocha
+        term_colors = false,
+        show_end_of_buffer = true, -- shows the '~' characters after the end of buffers
+        styles = {                 -- Handles the styles of general hi groups (see `:h highlight-args`):
+          comments = { "italic" }, -- Change the style of comments
+          -- conditionals = { "italic" },
+          functions = { 'bold' },
+          keywords = { 'bold' },
+          -- strings = { 'italic' },
+        },
+      })
+    end
+  },
+  {
+    "AlexvZyl/nordic.nvim",
+    config = function()
+      require 'nordic'.setup({
+        bold_keywords = true,
+        -- bright_border = true,
+        -- swap_backgrounds = true,
+        ts_context = {
+          -- Enables dark background for treesitter-context window
+          -- dark_background = false,
+        }
+      })
+    end
+  },
+  {
+    "Tsuzat/NeoSolarized.nvim",
+    config = function()
+      require 'NeoSolarized'.setup({
+        styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
+          comments = { italic = true }, -- Change the style of comments
+          functions = { bold = true },
+          class = { bold = true, italic = true },
+          string = { italic = false },
+          keywords = { italic = false, bold = true },
+        },
+      })
+    end
+  },
+  {
+    "olimorris/onedarkpro.nvim",
+    config = function()
+      require('onedarkpro').setup({
+        styles = {
+          methods = "bold,italic",
+          comments = "italic",
+          keywords = "NONE",
+          constants = "bold",
+          functions = "bold",
+          parameters = "italic",
+        }
+      })
+    end
+  },
+  "rebelot/kanagawa.nvim",
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
@@ -631,3 +725,27 @@ lvim.plugins = {
 --   end,
 -- }
 --
+
+lvim.autocommands = {
+  {
+    "BufReadPost",
+    {
+      pattern = { "*.erb", "*.eruby" },
+      command = "set syntax=html",
+    }
+  },
+  {
+    "BufRead",
+    {
+      pattern = { "*.erb", "*.eruby" },
+      command = "set syntax=html",
+    }
+  },
+  {
+    "BufWinEnter", -- this works!
+    {
+      pattern = { "*.erb", "*.eruby" },
+      command = "set syntax=html",
+    }
+  },
+}
