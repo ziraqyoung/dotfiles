@@ -65,6 +65,30 @@ lvim.builtin.which_key.mappings["nh"] = { ":lua require('noice').cmd('history')<
 lvim.builtin.which_key.mappings["nd"] = {
   ":lua require('noice').cmd('dismiss')<CR>", "Dismis all visible notification"
 }
+-- Trouble
+lvim.builtin.which_key.mappings["x"] = {
+  name = "Trouble",
+  t = { "<cmd>TroubleToggle<cr>", "trouble" },
+  w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+  D = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
+  q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+  l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+  i = { "<cmd>TroubleToggle lsp_implementations<cr>", "implementations" },
+  d = { "<cmd>TroubleToggle lsp_definitions<cr>", "definitions" },
+  T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
+}
+
+-- Spectre
+lvim.builtin.which_key.mappings["s"] = {
+  s = { ":lua require('spectre').toggle()<cr>", "Toggle spectre" },
+}
+
+-- Noice
+lvim.builtin.which_key.mappings["nl"] = { ":lua require('noice').cmd('last')<CR>", "show last notification" }
+lvim.builtin.which_key.mappings["nh"] = { ":lua require('noice').cmd('history')<CR>", "show notification history" }
+lvim.builtin.which_key.mappings["nd"] = {
+  ":lua require('noice').cmd('dismiss')<CR>", "Dismis all visible notification"
+}
 
 -- -- Change theme settings
 -- lvim.colorscheme = "onedark"
@@ -73,7 +97,7 @@ lvim.builtin.which_key.mappings["nd"] = {
 -- lvim.colorscheme = "material-palenight"
 lvim.colorscheme = "catppuccin"
 -- lvim.colorscheme = "NeoSolarized"
--- lvim.colorscheme = "onedark_vivid" -- onelight, onedark_vivid, onedark_dark
+-- lvim.colorscheme = "onedark_vivid" -- onedark, onelight, onedark_vivid, onedark_dark
 
 -- After changing plugin config exit and reopen LunarVim, Run :PackerSync
 lvim.builtin.alpha.active = true
@@ -152,6 +176,7 @@ lvim.builtin.which_key.mappings["f"] = {
     }
   end, "Find words in all files" },
 }
+
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
@@ -162,6 +187,10 @@ lvim.builtin.treesitter.ensure_installed = {
 }
 
 local nvim_lsp = require("lspconfig")
+
+nvim_lsp.ruby_ls.setup({
+  cmd = { "ruby-lsp" }
+})
 
 nvim_lsp.solargraph.setup {
   filetypes = { "ruby", "rakefile" },
@@ -406,18 +435,6 @@ lvim.plugins = {
     end,
   },
   {
-    "rmagatti/goto-preview",
-    config = function()
-      require('goto-preview').setup {
-        width = 120,         -- Width of the floating window
-        height = 25,         -- Height of the floating window
-        debug = false,       -- Print debug information
-        opacity = nil,       -- 0-100 opacity level of the floating window where 100 is fully transparent.
-        post_open_hook = nil -- A function taking two arguments, a buffer and a window to be ran as a hook.
-      }
-    end
-  },
-  {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function() require "lsp_signature".on_attach() end,
@@ -547,6 +564,7 @@ lvim.plugins = {
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
     "ray-x/lsp_signature.nvim",
@@ -619,20 +637,20 @@ lvim.plugins = {
     end,
   },
   {
-    -- "navarasu/onedark.nvim",
-    -- config = function()
-    --   require('onedark').setup({
-    --     style = 'deep', -- warm, warmer, cool, deep, dark, darker
-    --     term_colors = true,
-    --     ending_tildes = true,
-    --     code_style = {
-    --       comments = 'italic',
-    --       -- keywords = 'italic,bold',
-    --       functions = 'bold',
-    --       -- strings = 'italic',
-    --     },
-    --   })
-    -- end
+    "navarasu/onedark.nvim",
+    config = function()
+      require('onedark').setup({
+        style = 'deep', -- warm, warmer, cool, deep, dark, darker
+        term_colors = true,
+        ending_tildes = true,
+        code_style = {
+          comments = 'italic',
+          -- keywords = 'italic,bold',
+          functions = 'bold',
+          -- strings = 'italic',
+        },
+      })
+    end
   },
   {
     "neanias/everforest-nvim",
@@ -699,19 +717,19 @@ lvim.plugins = {
     end
   },
   {
-    "olimorris/onedarkpro.nvim",
-    config = function()
-      require('onedarkpro').setup({
-        styles = {
-          methods = "bold,italic",
-          comments = "italic",
-          keywords = "NONE",
-          constants = "bold",
-          functions = "bold",
-          parameters = "italic",
-        }
-      })
-    end
+    -- "olimorris/onedarkpro.nvim",
+    -- config = function()
+    --   require('onedarkpro').setup({
+    --     styles = {
+    --       methods = "bold,italic",
+    --       comments = "italic",
+    --       keywords = "NONE",
+    --       constants = "bold",
+    --       functions = "bold",
+    --       parameters = "italic",
+    --     }
+    --   })
+    -- end
   },
   "rebelot/kanagawa.nvim",
 }
