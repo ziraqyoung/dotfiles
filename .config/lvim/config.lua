@@ -74,12 +74,23 @@ lvim.builtin.which_key.mappings["x"] = {
   q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
   l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
   i = { "<cmd>TroubleToggle lsp_implementations<cr>", "implementations" },
+  r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
   d = { "<cmd>TroubleToggle lsp_definitions<cr>", "definitions" },
   T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
 
+-- dropbar
+lvim.builtin.which_key.mappings["nd"] = {
+  ":lua require('noice').cmd('dismiss')<CR>", "Dismis all visible notification"
+}
+lvim.builtin.which_key.mappings["t"] = {
+  name = "Dropdown/ToggleTerm",
+  t = { "<cmd>lua require('dropbar.api').pick()<cr>", "Dropdown menu" },
+}
+
 -- Spectre
 lvim.builtin.which_key.mappings["s"] = {
+  name = "Search / Replace (Spectre)",
   s = { ":lua require('spectre').toggle()<cr>", "Toggle spectre" },
 }
 
@@ -95,13 +106,14 @@ lvim.builtin.which_key.mappings["nd"] = {
 -- lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "nordic"
 -- lvim.colorscheme = "material-palenight"
-lvim.colorscheme = "catppuccin"
+-- lvim.colorscheme = "catppuccin"
 -- lvim.colorscheme = "NeoSolarized"
 -- lvim.colorscheme = "onedark_vivid" -- onedark, onelight, onedark_vivid, onedark_dark
+lvim.colorscheme = "github_dark_dimmed"
 
 -- After changing plugin config exit and reopen LunarVim, Run :PackerSync
-lvim.builtin.alpha.active = true
 lvim.builtin.dap.active = true
+lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.breadcrumbs.active = true
 
@@ -188,9 +200,9 @@ lvim.builtin.treesitter.ensure_installed = {
 
 local nvim_lsp = require("lspconfig")
 
-nvim_lsp.ruby_ls.setup({
-  cmd = { "ruby-lsp" }
-})
+-- nvim_lsp.ruby_ls.setup({
+--   cmd = { "ruby-lsp" }
+-- })
 
 nvim_lsp.solargraph.setup {
   filetypes = { "ruby", "rakefile" },
@@ -226,7 +238,7 @@ local null_ls = require("null-ls")
 local sources = {
   null_ls.builtins.diagnostics.rubocop,
   null_ls.builtins.diagnostics.erb_lint.with({}),
-  null_ls.builtins.diagnostics.haml_lint.with({}),
+  -- null_ls.builtins.diagnostics.haml_lint.with({}),
   null_ls.builtins.formatting.erb_lint,
   null_ls.builtins.formatting.erb_format,
 }
@@ -334,6 +346,33 @@ lvim.plugins = {
     end,
   },
   -- Other plugins
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+      require("hover").setup {
+        init = function()
+          -- Require providers
+          require("hover.providers.lsp")
+          require('hover.providers.gh')
+          require('hover.providers.man')
+          require('hover.providers.dictionary')
+        end,
+        preview_opts = {
+          border = nil
+        },
+        -- Whether the contents of a currently open hover window should be moved
+        -- to a :h preview-window when pressing the hover keymap.
+        preview_window = false,
+        title = true
+      }
+      -- Setup keymaps
+      vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+      vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
+    end
+  },
+  {
+    "Bekaboo/dropbar.nvim"
+  },
   {
     "folke/noice.nvim",
     event = "VeryLazy",
@@ -452,6 +491,13 @@ lvim.plugins = {
   },
   { "ray-x/web-tools.nvim" },
   -- Rails
+  {
+    "mihyaeru21/nvim-lspconfig-bundler",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require('lspconfig-bundler').setup()
+    end
+  },
   {
     "RRethy/nvim-treesitter-endwise",
     config = function()
@@ -637,20 +683,20 @@ lvim.plugins = {
     end,
   },
   {
-    "navarasu/onedark.nvim",
-    config = function()
-      require('onedark').setup({
-        style = 'deep', -- warm, warmer, cool, deep, dark, darker
-        term_colors = true,
-        ending_tildes = true,
-        code_style = {
-          comments = 'italic',
-          -- keywords = 'italic,bold',
-          functions = 'bold',
-          -- strings = 'italic',
-        },
-      })
-    end
+    -- "navarasu/onedark.nvim",
+    -- config = function()
+    --   require('onedark').setup({
+    --     style = 'deep', -- warm, warmer, cool, deep, dark, darker
+    --     term_colors = true,
+    --     ending_tildes = true,
+    --     code_style = {
+    --       comments = 'italic',
+    --       -- keywords = 'italic,bold',
+    --       functions = 'bold',
+    --       -- strings = 'italic',
+    --     },
+    --   })
+    -- end
   },
   {
     "neanias/everforest-nvim",
@@ -717,19 +763,39 @@ lvim.plugins = {
     end
   },
   {
-    -- "olimorris/onedarkpro.nvim",
-    -- config = function()
-    --   require('onedarkpro').setup({
-    --     styles = {
-    --       methods = "bold,italic",
-    --       comments = "italic",
-    --       keywords = "NONE",
-    --       constants = "bold",
-    --       functions = "bold",
-    --       parameters = "italic",
-    --     }
-    --   })
-    -- end
+    "olimorris/onedarkpro.nvim",
+    config = function()
+      require('onedarkpro').setup({
+        styles = {
+          methods = "bold,italic",
+          comments = "italic",
+          keywords = "NONE",
+          constants = "bold",
+          functions = "bold",
+          parameters = "italic",
+        }
+      })
+    end
+  },
+  {
+    "projekt0n/github-nvim-theme",
+    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require('github-theme').setup({
+        options = {
+          hide_end_of_buffer = false,
+          styles = {
+            comments = 'italic',
+            functions = 'NONE',
+            keywords = 'NONE',
+            constants = 'bold',
+            operators = 'bold',
+            types = 'italic,bold',
+          }
+        }
+      })
+    end
   },
   "rebelot/kanagawa.nvim",
 }

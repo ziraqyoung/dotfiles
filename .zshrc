@@ -77,7 +77,7 @@ export UPDATE_ZSH_DAYS=30
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git asdf web-search node bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize fzf)
+plugins=(git asdf web-search node bun bundler rake ruby python colored-man-pages zsh-autosuggestions zsh-syntax-highlighting colored-man-pages colorize fzf)
 
 source $ZSH/oh-my-zsh.sh
 # User configuration
@@ -122,6 +122,7 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
 
 alias v="nvim"
+alias nv="NVIM_APPNAME=nv-ide nvim"
 alias lg="lazygit"
 alias tdev="tmux new -s ziraq"
 
@@ -165,3 +166,10 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
+
+# bun completions
+[ -s "/home/ziraqyoung/.bun/_bun" ] && source "/home/ziraqyoung/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
