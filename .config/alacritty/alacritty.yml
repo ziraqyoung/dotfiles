@@ -328,6 +328,13 @@ colors: *rigel # argonaut, everforest_dark_soft  moonlight_ii_vscode, rigel
   #   - _ Underline
   #   - | Beam
   #style: Block
+cursor:
+  style:
+    shape: Beam
+    blinking: Always
+  blink_interval: 500
+  unfocused_hollow: true
+  thickness: 0.25
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.

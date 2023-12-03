@@ -136,6 +136,8 @@ lvim.builtin.which_key.mappings["s"] = {
   t = { ":TodoTelescope<cr>", "Search all project  Todos" },
 }
 
+-- Oil.nvim (another option is -)
+lvim.keys.normal_mode["<leader>O"] = ":Oil<CR>"
 
 -- -- Change theme settings
 -- lvim.colorscheme = "onedark"
@@ -171,6 +173,9 @@ lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
 lvim.builtin.telescope.defaults.layout_config.prompt_position = "top"
 lvim.builtin.telescope.defaults.borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 lvim.builtin.telescope.defaults.path_display = { "truncate" }
+
+-- Setup vim-matchup
+lvim.builtin.treesitter.matchup.enable = true
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
@@ -366,6 +371,12 @@ null_ls.register({ sources = sources })
 lvim.plugins = {
   -- General
   {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  {
     "npxbr/glow.nvim",
     ft = { "markdown" }
     -- build = "yay -S glow"
@@ -387,6 +398,12 @@ lvim.plugins = {
     end,
   },
   -- TreeSitter extensions
+  {
+    "andymass/vim-matchup", -- {{{
+    config = function()
+      vim.g.matchup_matchparen_offscreen = { method = "popup", fullwidth = 1, highlight = "Normal", syntax_hl = 1 }
+    end,
+  },
   {
     "romgrk/nvim-treesitter-context",
     config = function()
@@ -740,7 +757,9 @@ lvim.plugins = {
     "windwp/nvim-ts-autotag", -- autoclose and autorename html tag
     event = "BufRead",
     config = function()
-      require("nvim-ts-autotag").setup()
+      require("nvim-ts-autotag").setup({
+        filetypes = { "html", "xml", "eruby", "embedded_template" }
+      })
     end,
   },
   {
