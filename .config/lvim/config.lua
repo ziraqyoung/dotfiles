@@ -230,14 +230,32 @@ lvim.builtin.mason.ensure_installed = {
 -- Telescope key mappings(check this to refactor this: https://github.com/rochacbruno/dotfiles)
 local get_telescope_mappings = function()
   local actions = require("telescope.actions")
+  -- If multiple file selections are detected, open each file. If hitting
+  -- <CR> on a single selection fall back to the default behaviour.
+  -- https://github.com/nvim-telescope/telescope.nvim/issues/1048#issuecomment-1679797700
+  local select_one_or_multi = function(prompt_bufnr)
+    local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+    local multi = picker:get_multi_selection()
+    if not vim.tbl_isempty(multi) then
+      require('telescope.actions').close(prompt_bufnr)
+      for _, j in pairs(multi) do
+        if j.path ~= nil then
+          vim.cmd(string.format("%s %s", "edit", j.path))
+        end
+      end
+    else
+      require('telescope.actions').select_default(prompt_bufnr)
+    end
+  end
+
   return {
     i = {
-      ["<C-j>"] = actions.move_selection_next,
-      ["<C-k>"] = actions.move_selection_previous,
+      ["<CR>"] = select_one_or_multi,
     },
     n = {
-      ["<C-j>"] = actions.move_selection_next,
-      ["<C-k>"] = actions.move_selection_previous,
+      ["<CR>"] = select_one_or_multi,
+      ['K'] = actions.preview_scrolling_up,
+      ['J'] = actions.preview_scrolling_down,
     },
   }
 end
@@ -377,9 +395,9 @@ lvim.plugins = {
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   {
-    "npxbr/glow.nvim",
-    ft = { "markdown" }
-    -- build = "yay -S glow"
+    "ellisonleao/glow.nvim",
+    cmd = "Glow",
+    opts = {}
   },
   {
     "kylechui/nvim-surround",
@@ -397,6 +415,34 @@ lvim.plugins = {
       require("todo-comments").setup()
     end,
   },
+
+  -- Linting
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   enabled = false,
+  --   config = function()
+  --     require("lint").linters_by_ft = {
+  --       gitcommit = { 'gitlint' },
+  --       markdown = { "markdownlint" },
+  --       javascript = { 'eslint_d' },
+  --       typescript = { 'eslint_d' },
+  --       eruby = { 'erb_lint' },
+  --       json = { 'jsonlint' },
+  --       scss = { 'stylelint' }
+  --     }
+
+  --     vim.api.nvim_create_autocmd({
+  --       "BufReadPost",
+  --       "BufWritePost",
+  --       "InsertLeave",
+  --     }, {
+  --       desc = "Lint",
+  --       callback = function()
+  --         require("lint").try_lint()
+  --       end,
+  --     })
+  --   end,
+  -- },
   -- TreeSitter extensions
   {
     "andymass/vim-matchup", -- {{{
@@ -404,23 +450,23 @@ lvim.plugins = {
       vim.g.matchup_matchparen_offscreen = { method = "popup", fullwidth = 1, highlight = "Normal", syntax_hl = 1 }
     end,
   },
-  {
-    "romgrk/nvim-treesitter-context",
-    config = function()
-      require("treesitter-context").setup {
-        enable = true,
-        throttle = true,
-        max_lines = 0,
-        patterns = {
-          default = {
-            'class',
-            'function',
-            'method',
-          },
-        },
-      }
-    end
-  },
+  -- {
+  --   "romgrk/nvim-treesitter-context",
+  --   config = function()
+  --     require("treesitter-context").setup {
+  --       enable = true,
+  --       throttle = true,
+  --       max_lines = 0,
+  --       patterns = {
+  --         default = {
+  --           'class',
+  --           'function',
+  --           'method',
+  --         },
+  --       },
+  --     }
+  --   end
+  -- },
   -- UI(Breadcrumbs etc)
   { "Bekaboo/dropbar.nvim", event = "UIEnter", opts = {} },
   {

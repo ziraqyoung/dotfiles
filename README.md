@@ -28,16 +28,18 @@
 
 - Fonts (managers, NerdFont patchers) - `sudo apt install fontforge` & `sudo apt install font-manager`
 
-- Eslint for JS and Friends:
+- JavaScript, Node, friends
+  ```bash
+    npm install -g yarn csslint eslint javascript-typescript-langserver jsonlint npm-check-updates pnpm typescript-language-server
+    npm install -g css-languageserver dockerfile_lint  html-languageserver javascript-typescript-stdio live-server  neovim-node-host pnpx
 
-  - ```shell
     yarn global add eslint eslint-config-airbnb
-    
+
     yarn global add eslint-plugin-jsx-a11y@^2.0.0 eslint-plugin-react eslint-plugin-import babel-eslint
-    ```
+  ```
 
   - Create a global config filr `~/.eslintrc`
-
+  
     ```json
     {
       "extends": "airbnb",
@@ -47,15 +49,12 @@
         }
     }
     ```
-
-  - Ensure this in `vimrc`
-
-    ```
-    let g:ale_linters = {
-    \  'javascript': ['eslint'],
-    \  'jsx': ['eslint']
-    \}
-    ```
-
     
+- Ensure this in `vimrc`
 
+  ```vim
+  let g:ale_linters = {
+  \  'javascript': ['eslint'],
+  \  'jsx': ['eslint']
+  \}
+  ```
