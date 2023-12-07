@@ -397,7 +397,12 @@ lvim.plugins = {
   {
     "ellisonleao/glow.nvim",
     cmd = "Glow",
-    opts = {}
+    opts = {
+      width = 200,
+      height = 150,
+      width_ratio = 0.9, -- maximum width of the Glow window compared to the nvim window size (overrides `width`)
+      height_ratio = 0.8,
+    }
   },
   {
     "kylechui/nvim-surround",
